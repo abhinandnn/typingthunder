@@ -7,6 +7,10 @@ import Fahid from '../../../public/fahid.svg'
 import Bigbutton from '@/components/bigbutton';
 import Googlebutton from '@/components/googlebutton';
 import Image from 'next/image';
+import Link from 'next/link';
+import checkbox from '../../../public/checkbox.svg'
+import { useRouter } from 'next/router';
+
 function Login() {
   const [inputValue, setInputValue] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
@@ -38,9 +42,39 @@ function Login() {
     setPassword(value);
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
+if(isValidEmail)
+{
+  try{
+    const response = await axios.post('api/auth/sign-in/email',{email:inputValue,password:password},
+      {headers:{'Content-Type':'application/json; charset=utf-8'},
+        withCredentials: false});
+        console.log("signup success");
+}catch(err){
+    console.log(err.response);
+if(err.response){
+console.log('Server responded');
+console.log(err.response);
 
+  }}
+}
+else if(isValidUsername)
+{
+  
+  try{
+    const response = await axios.post('api/auth/sign-in/username',{username:inputValue,password:password},
+      {headers:{'Content-Type':'application/json; charset=utf-8'},
+        withCredentials: false});
+        console.log("signup success");
+}catch(err){
+    console.log(err.response);
+if(err.response){
+console.log('Server responded');
+console.log(err.response);
+
+  }}
+}
    
   };
   return (
@@ -50,7 +84,7 @@ function Login() {
 </svg>
 <>TypingThunder</>
 </div>
-<div className='text-[#B3B3B3] text-[1.125rem]'>Don't have an account? <span className='text-[#e6e6e6] underline'>Sign up</span></div>
+<div className='text-[#B3B3B3] text-[1.125rem]'>Don't have an account? <span className='text-[#e6e6e6] underline'><Link href={'/signup'}>Sign up</Link></span></div>
 </div>
     <div className='flex flex-row gap-[12.5rem]'>
     <div className='pt-[11.7rem] w-[30rem] flex flex-col gap-[1.5rem]'>
@@ -94,7 +128,9 @@ function Login() {
     <label className={`absolute pointer-events-none peer-focus:top-2 peer-focus:text-[0.875rem] peer-focus:text-dgr ${!password? 'top-[31.2%]': 'top-2 text-dgr text-[0.875rem]'} left-[1rem]`} for="pwd">Enter password</label>
   </div>
 <div className='text-right mb-[1rem] cursor-pointer'>Reset password</div>
-<div className='text-[1rem]'>Remember me</div>
+<div className='text-[1rem] flex flex-row items-center '>
+  <Image src={checkbox}/>
+Remember me</div>
   </div>
 <Bigbutton />
 <Googlebutton />

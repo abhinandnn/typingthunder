@@ -8,7 +8,10 @@ import Bigbutton from '@/components/bigbutton';
 import Googlebutton from '@/components/googlebutton';
 import Image from 'next/image';
 import axios from '@/api/axios';
-function Login() {
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+function Signup() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
@@ -39,10 +42,12 @@ function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    localStorage.setItem("signupEmail",email);  
     try{
         const response = await axios.post('api/auth/sign-up',{username:username,email:email,password:password},
           {headers:{'Content-Type':'application/json; charset=utf-8'},
             withCredentials: false});
+            router.push('/signup/otp');
             console.log("signup success");
     }catch(err){
         console.log(err.response);
@@ -78,7 +83,7 @@ function Login() {
 </svg>
 <>TypingThunder</>
 </div>
-<div className='text-[#B3B3B3] text-[1.125rem]'>Already a user? <span className='text-[#e6e6e6] underline'>Log in</span></div>
+<div className='text-[#B3B3B3] text-[1.125rem]'>Already a user? <Link href={'/login'}><span className='text-[#e6e6e6] underline'>Log in</span></Link></div>
 </div>
     <div className='flex flex-row gap-[12.5rem]'>
     <div className='pt-[11.7rem] w-[30rem] flex flex-col gap-[1.5rem]'>
@@ -156,4 +161,4 @@ Continue
   )
 }
 
-export default Login
+export default Signup

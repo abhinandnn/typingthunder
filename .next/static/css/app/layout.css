@@ -452,6 +452,9 @@ video {
 .top-\[31\.2\%\]{
   top: 31.2%;
 }
+.mb-5{
+  margin-bottom: 1.25rem;
+}
 .mb-\[1\.35rem\]{
   margin-bottom: 1.35rem;
 }
@@ -463,6 +466,21 @@ video {
 }
 .mb-\[2\.6rem\]{
   margin-bottom: 2.6rem;
+}
+.mr-2{
+  margin-right: 0.5rem;
+}
+.mr-5{
+  margin-right: 1.25rem;
+}
+.mr-4{
+  margin-right: 1rem;
+}
+.mt-\[2\]{
+  margin-top: 2;
+}
+.mt-\[2rem\]{
+  margin-top: 2rem;
 }
 .box-border{
   box-sizing: border-box;
@@ -482,6 +500,12 @@ video {
 .h-\[4rem\]{
   height: 4rem;
 }
+.h-\[3\.125rem\]{
+  height: 3.125rem;
+}
+.h-4{
+  height: 1rem;
+}
 .w-\[11\.5rem\]{
   width: 11.5rem;
 }
@@ -497,6 +521,30 @@ video {
 .w-\[31\.7rem\]{
   width: 31.7rem;
 }
+.w-3{
+  width: 0.75rem;
+}
+.w-\[3\.125rem\]{
+  width: 3.125rem;
+}
+.w-\[7\.125rem\]{
+  width: 7.125rem;
+}
+.w-\[7rem\]{
+  width: 7rem;
+}
+.w-8{
+  width: 2rem;
+}
+.min-w-5{
+  min-width: 1.25rem;
+}
+.min-w-\[\]{
+  min-width: ;
+}
+.min-w-\[3\.125rem\]{
+  min-width: 3.125rem;
+}
 .cursor-pointer{
   cursor: pointer;
 }
@@ -508,6 +556,9 @@ video {
 }
 .items-center{
   align-items: center;
+}
+.justify-start{
+  justify-content: flex-start;
 }
 .justify-center{
   justify-content: center;
@@ -539,8 +590,14 @@ video {
 .rounded-\[1\.25rem\]{
   border-radius: 1.25rem;
 }
+.rounded-\[0\.8125rem\]{
+  border-radius: 0.8125rem;
+}
 .border{
   border-width: 1px;
+}
+.border-none{
+  border-style: none;
 }
 .border-\[\#FF7E7E\]{
   --tw-border-opacity: 1;
@@ -597,6 +654,14 @@ video {
   padding-top: 3rem;
   padding-bottom: 3rem;
 }
+.px-\[2rem\]{
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+.px-\[1\.5rem\]{
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
 .pb-\[0\.625rem\]{
   padding-bottom: 0.625rem;
 }
@@ -612,11 +677,17 @@ video {
 .pt-\[0\.75rem\]{
   padding-top: 0.75rem;
 }
+.pt-\[10rem\]{
+  padding-top: 10rem;
+}
 .pt-\[11\.7rem\]{
   padding-top: 11.7rem;
 }
 .pt-\[4\.8rem\]{
   padding-top: 4.8rem;
+}
+.text-center{
+  text-align: center;
 }
 .text-right{
   text-align: right;
@@ -641,6 +712,10 @@ video {
 }
 .text-\[2\.5rem\]{
   font-size: 2.5rem;
+}
+.text-sm{
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 .font-light{
   font-weight: 300;

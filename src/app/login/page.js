@@ -128,7 +128,7 @@ console.log(err.response);
     <label className={`absolute pointer-events-none peer-focus:top-2 peer-focus:text-[0.875rem] peer-focus:text-dgr ${!password? 'top-[31.2%]': 'top-2 text-dgr text-[0.875rem]'} left-[1rem]`} for="pwd">Enter password</label>
   </div>
 <div className='text-right mb-[1rem] cursor-pointer'>Reset password</div>
-<div className='text-[1rem] flex flex-row items-center '>
+<div className='text-[1rem] gap-2 flex flex-row items-center '>
   <Image src={checkbox}/>
 Remember me</div>
   </div>

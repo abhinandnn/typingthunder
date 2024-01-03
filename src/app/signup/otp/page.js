@@ -2,10 +2,8 @@
 import React from 'react'
 import { useState } from 'react';
 import { Typewriter } from 'react-simple-typewriter'
-import Fa from '../../../public/fa.svg'
-import Fahid from '../../../public/fahid.svg'
-import Bigbutton from '@/components/bigbutton';
-import Googlebutton from '@/components/googlebutton';
+import Fa from '../../../../public/fa.svg'
+import Fahid from '../../../../public/fahid.svg'
 import Image from 'next/image';
 import axios from '@/api/axios';
 function Login() {

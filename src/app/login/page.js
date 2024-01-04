@@ -9,6 +9,7 @@ import Googlebutton from '@/components/googlebutton';
 import Image from 'next/image';
 import Link from 'next/link';
 import checkbox from '../../../public/checkbox.svg'
+import axios from '@/api/axios';
 import { useRouter } from 'next/router';
 
 function Login() {
@@ -51,6 +52,7 @@ if(isValidEmail)
       {headers:{'Content-Type':'application/json; charset=utf-8'},
         withCredentials: false});
         console.log("signup success");
+        console.log(response)
 }catch(err){
     console.log(err.response);
 if(err.response){
@@ -108,7 +110,7 @@ console.log(err.response);
             <span className='text-[2.5rem] text-lgr leading-[1.125rem]'>Login</span>
             Log in to test your typing speed with your companions.
           </div>
-          <form className='flex flex-col gap-8'>
+          <form onSubmit={handleSubmit} className='flex flex-col gap-8'>
             <div>
         <div className='relative  mb-[2.6rem]'>
     <input type="text" required id="user"

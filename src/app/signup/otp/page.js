@@ -9,12 +9,13 @@ import Image from 'next/image';
 import axios from '@/api/axios';
 import OTPInput from 'react-otp-input';
 import { toast } from 'react-toastify';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 function Otp() {
+  const router=useRouter();
   const [otp, setOtp] = useState('');
   const [error,setError]= useState('')
-  const em=localStorage.getItem("signupEmail");
+  // const em=localStorage.getItem("signupEmail");
   const handleSubmit = async (event) => {
     event.preventDefault();
     if(otp.length==6){
@@ -23,6 +24,7 @@ function Otp() {
         {headers:{'Content-Type':'application/json; charset=utf-8'},
           withCredentials: false});
           console.log(response.data.message);
+          router.push('/login')
           // if(response.data.success){
           // toast.success("OTP verified!")
           //   if(!sign)
@@ -62,7 +64,7 @@ function Otp() {
           <div className='flex flex-col text-dgr'>
             <span className='text-[2.5rem] text-lgr mb-5 leading-[1.125rem]'>Enter OTP</span>
             Please enter the 6-digit code sent to you at
-            <span className='text-lgr'>{em}</span>
+            {/* <span className='text-lgr'>{em}</span> */}
           </div>
           <OTPInput
       value={otp}

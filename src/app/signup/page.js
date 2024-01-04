@@ -42,13 +42,13 @@ function Signup() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    localStorage.setItem("signupEmail",email);  
+    // localStorage.setItem("signupEmail",email);  
     try{
         const response = await axios.post('api/auth/sign-up',{username:username,email:email,password:password},
           {headers:{'Content-Type':'application/json; charset=utf-8'},
             withCredentials: false});
             router.push('/signup/otp');
-            console.log("signup success");
+            console.log("otp sent success");
     }catch(err){
         console.log(err.response);
     if(err.response){

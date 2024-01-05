@@ -17,7 +17,7 @@ useEffect(() => {
   const handleResendOtp=async()=>{
   setSeconds(59);
   try{
-    const response = await axios.post(RESEND_URL,{email:email},
+    const response = await axios.post('api/auth/resend-otp',{email:email},
       {headers:{'Content-Type':'application/json; charset=utf-8'},
         withCredentials: false});
         console.log(response.data.message)
@@ -29,14 +29,10 @@ useEffect(() => {
   }
   return (
     <div className='belowButton'>
-       <div className='text-sm flex items-center justify-start w-26.5 text-center h-4.5'>
+       <div className='text-[1rem] flex items-center justify-start w-26.5 text-center h-4.5'>
         <button type='button'
-        className='bg-transparent border-none outline-none'
-
+        className={`bg-transparent border-none outline-none ${seconds>0?'text-white':'text-lgr font-bold'}`}
         disabled={seconds > 0}
-        style={{
-          color: seconds > 0 ? "grey" : "",
-        }}
         onClick={handleResendOtp}
       >
         Resend OTP

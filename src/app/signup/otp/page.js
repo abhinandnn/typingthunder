@@ -11,6 +11,7 @@ import OTPInput from 'react-otp-input';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import ResendOtp from '@/components/resendOtp';
 // import { cookies } from 'next/headers';
 import cookie from 'js-cookie'
 function Otp() {
@@ -63,21 +64,24 @@ function Otp() {
     <div className='pt-[10rem] w-[30rem] flex flex-col gap-[1.5rem]'>
         <Image src={Otpil}/>
         </div>
-        <div className='flex flex-col gap-8 text-[1.125rem] pt-[4.8rem] text-white'>
-          <div className='flex flex-col text-dgr'>
+        <div className='flex flex-col gap-3 text-[1.125rem] pt-[4.8rem] text-white'>
+          <div className='flex flex-col mb-5 text-dgr'>
             <span className='text-[2.5rem] text-lgr mb-5 leading-[1.125rem]'>Enter OTP</span>
             Please enter the 6-digit code sent to you at
             <span className='text-lgr'>{em}</span> 
           </div>
+          <div className='flex flex-col relative pb-7'>
           <OTPInput
       value={otp}
       onChange={setOtp}
       numInputs={6}
       renderInput={(props) => <input {...props}/>}
       inputType='tel'
-      inputStyle={`mr-4 h-[3.125rem] min-w-[3.125rem] text-[1.375rem] bg-transparent text-white rounded-[0.8125rem] border ${otp.length==6||otp.length==0?'border-dgr':'border-[#FF7E7E]'} outline-none` } 
+      inputStyle={`mr-4 h-[3.125rem] min-w-[3.125rem] text-[1.375rem] bg-transparent text-white rounded-[0.8125rem] border ${(otp.length==6&&!error)||otp.length==0?'border-dgr':'border-[#FF7E7E]'} outline-none` } 
     />
-    {error&&<span>{error}</span>}
+    {error&&otp.length>0&&<span className='text-[1rem] text-err absolute l-0 bottom-[-12%]'>{error}</span>}
+    </div>
+    <ResendOtp email={em}/>
     <button onClick={handleSubmit} className='bg-white mt-[2rem] text-black text-[1.375rem] w-[31.7rem] h-[4rem] px-6 pt-3 pb-[0.625rem] rounded-[1.25rem]'>
 Verify
     </button>

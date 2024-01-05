@@ -18,6 +18,7 @@ function Signup() {
   const [username, setUsername] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [isValidUsername, setIsValidUsername] = useState(true);
+  const [isValidPassword, setIsValidPassword]=useState(true);
   const [password,setPassword]=useState('')
   const [showPassword, setShowPassword] = useState(false);
 
@@ -26,6 +27,9 @@ function Signup() {
   const handlePasswordChange = (event) => {
     const value=event.target.value;
     setPassword(value);
+    const passwordRegex= /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+    const isPassword=passwordRegex.test(value)
+    setIsValidPassword(isPassword);
   }
   const handleUsernameChange = (event) => {
     const value=event.target.value;
@@ -45,6 +49,7 @@ function Signup() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     cookie.set("email", email);
+    if(isValidEmail&&isValidPassword&&isValidUsername){
         try{
         const response = await axios.post('api/auth/sign-up',{username:username,email:email,password:password},
           {headers:{'Content-Type':'application/json; charset=utf-8'},
@@ -57,7 +62,7 @@ function Signup() {
     console.log('Server responded');
     console.log(err.response);
 
-      }}}
+      }}}}
       const handleGoogle = async (event) => {
         event.preventDefault();
         try{
@@ -131,11 +136,11 @@ function Signup() {
     <input type={showPassword?'text':'password'} required id="pwd"
     value={password}
     onChange={handlePasswordChange}
-    name="pwd" className={`w-[31.5rem] h-[4.5rem] peer rounded-[1.25rem] bg-transparent border border-dgr px-[1rem] focus:pt-[0.75rem] pr-[3rem] ${!password? 'pt-0':'pt-[0.75rem]'} outline-none box-border`}/>
+    name="pwd" className={`w-[31.5rem] h-[4.5rem] peer rounded-[1.25rem] ${(isValidPassword)?'bg-transparent border-dgr':'bg-[#190F0F] border-[#FF7E7E]'} border px-[1rem] focus:pt-[0.75rem] pr-[3rem] ${!password? 'pt-0':'pt-[0.75rem]'} outline-none box-border`}/>
     <div className='absolute right-4 top-6 cursor-pointer' onClick={passwordShow}>
         <Image src={showPassword?Fa:Fahid} />
       </div> 
-    <label className={`absolute pointer-events-none peer-focus:top-2 peer-focus:text-[0.875rem] peer-focus:text-dgr ${!password? 'top-[31.2%]': 'top-2 text-dgr text-[0.875rem]'} left-[1rem]`} for="pwd">Enter password</label>
+    <label className={`absolute pointer-events-none peer-focus:top-2 peer-focus:text-[0.875rem] ${(isValidPassword)?'peer-focus:text-dgr':'peer-focus:text-[#FF7E7E] text-[#FF7E7E]'} ${!password? 'top-[31.2%]': 'top-2 text-dgr text-[0.875rem]'} left-[1rem]`} for="pwd">Enter password</label>
   </div>
   </div>
   <button className=' bg-white active:bg-blue text-black text-[1.375rem] w-[31.7rem] h-[4rem] px-6 pt-3 pb-[0.625rem] rounded-[1.25rem]'>

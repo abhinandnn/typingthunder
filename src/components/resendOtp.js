@@ -21,10 +21,9 @@ useEffect(() => {
       {headers:{'Content-Type':'application/json; charset=utf-8'},
         withCredentials: false});
         console.log(response.data.message)
-        toast.info("New OTP sent!")
+        toast.success("New OTP sent!")
 }catch(err){
   toast.error("No Server response")
-  console.log('No Server response');
 }
   }
   return (

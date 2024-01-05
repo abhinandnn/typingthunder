@@ -22,6 +22,11 @@ function Signup() {
   const [isValidPassword, setIsValidPassword]=useState(true);
   const [password,setPassword]=useState('')
   const [showPassword, setShowPassword] = useState(false);
+  const [errorUsername, setErrorUsername]= useState(false);
+  const [errorEmail, setErrorEmail]= useState(false);
+  const [errorPassword, setErrorPassword]= useState(false);
+
+
 
   const passwordShow = () => {
     setShowPassword(!showPassword);}
@@ -29,7 +34,11 @@ function Signup() {
     const value=event.target.value;
     setPassword(value);
     const passwordRegex= /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
-    const isPassword=passwordRegex.test(value)
+    const isPassword=passwordRegex.test(value);
+    if(!isPassword&&value)
+    setErrorPassword('Choose a strong password');
+  else
+  setErrorPassword(false);
     setIsValidPassword(isPassword);
   }
   const handleUsernameChange = (event) => {
@@ -37,6 +46,10 @@ function Signup() {
     setUsername(value);
     const usernameRegex = /^[a-zA-Z0-9_.]+$/;
     const isUsername = usernameRegex.test(value);
+    if(!isUsername&&value)
+    setErrorUsername('Invalid Username');
+  else
+  setErrorUsername(false);
     setIsValidUsername(isUsername);
   }
   const handleEmailChange = (event) => {
@@ -44,13 +57,17 @@ function Signup() {
     setEmail(value);
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const isEmail = emailRegex.test(value);
+    if(!isEmail&&value)
+    setErrorEmail('Invalid Email');
+    else
+    setErrorEmail(false);
     setIsValidEmail(isEmail);
   }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     cookie.set("email", email);
-    if(isValidEmail&&isValidPassword&&isValidUsername){
+    if(!(errorPassword||errorEmail||errorUsername)){
         try{
         const response = await axios.post('api/auth/sign-up',{username:username,email:email,password:password},
           {headers:{'Content-Type':'application/json; charset=utf-8'},
@@ -63,7 +80,17 @@ function Signup() {
     if(err.response){
     console.log('Server responded');
     console.log(err.response);
-    toast.error(err.response.data.message);
+    if(err.response.data.message==='User with this email already exists')
+    {
+      setErrorEmail('User with this email already exists')
+      toast.error('User with this email already exists')
+
+    }
+    else if(err.response.data.message==='This username already exists'||err.response.status===500)
+    {
+      setErrorUsername('This username already exists')
+      toast.error('User with this username already exists')
+    }
 
       }}}}
       const handleGoogle = async (event) => {
@@ -79,13 +106,6 @@ function Signup() {
         console.log(err.response);
     
           }}}
-    // if (isValidEmail) {
-    //   console.log('Email:', inputValue);
-    // } else if (isValidUsername) {
-    //   console.log('Username:', inputValue);
-    // } else {
-    //   console.log('Invalid input');
-    //}
   return (
     <div className='bg-[#1a1a1a] font-Poppins h-[100vh] px-[7.4rem] py-[3rem]'>
         <div className='flex flex-row justify-between'><div className='flex flex-row gap-2 justify-center items-center text-[1.375rem] text-[#e6e6e6]'><svg width="33" height="31" viewBox="0 0 33 31" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -124,26 +144,32 @@ function Signup() {
     <input type="text" required id="user"
     value={email}
     onChange={handleEmailChange}
-    name="user" className={`w-[15.25rem] h-[4.5rem] peer rounded-[1.25rem] ${(isValidEmail)?'bg-transparent border-dgr':'bg-[#190F0F] border-[#FF7E7E]'} border  px-[1rem] focus:pt-[0.75rem] ${!email? 'pt-0':'pt-[0.75rem]'} outline-none box-border`}/> 
-    <label className={`absolute pointer-events-none peer-focus:top-2 peer-focus:text-[0.875rem] ${(isValidEmail)?'peer-focus:text-dgr':'peer-focus:text-[#FF7E7E] text-[#FF7E7E]'} ${!email? 'top-[31.2%]': 'top-2 text-dgr text-[0.875rem]'} left-[1rem]`} for="user">Enter email</label>
+    name="user" className={`w-[15.25rem] h-[4.5rem] peer rounded-[1.25rem] ${(!errorEmail)?'bg-transparent border-dgr':'bg-[#190F0F] border-[#FF7E7E]'} border  px-[1rem] focus:pt-[0.75rem] ${!email? 'pt-0':'pt-[0.75rem]'} outline-none box-border`}/> 
+    <label className={`absolute pointer-events-none peer-focus:top-2 peer-focus:text-[0.875rem] ${(errorEmail)?'text-err':'peer-focus:text-dgr'} ${!email? 'top-[31.2%]': 'top-2 text-dgr text-[0.875rem]'} left-[1rem]`} for="user">Enter email</label>
+    {errorEmail&&<span className='text-[0.875rem] text-err absolute left-0 bottom-[-35%]'>{errorEmail}</span>}
+
   </div>
   <div className='relative  mb-[2.6rem]'>
     <input type="text" required id="user"
     value={username}
     onChange={handleUsernameChange}
-    name="user" className={`w-[15.25rem] h-[4.5rem] peer rounded-[1.25rem] ${(isValidUsername)?'bg-transparent border-dgr':'bg-[#190F0F] border-[#FF7E7E]'} border  px-[1rem] focus:pt-[0.75rem] ${!username? 'pt-0':'pt-[0.75rem]'} outline-none box-border`}/> 
-    <label className={`absolute pointer-events-none peer-focus:top-2 peer-focus:text-[0.875rem] ${(isValidUsername)?'peer-focus:text-dgr':'peer-focus:text-[#FF7E7E] text-[#FF7E7E]'} ${!username? 'top-[31.2%]': 'top-2 text-dgr text-[0.875rem]'} left-[1rem]`} for="user">Username</label>
+    name="user" className={`w-[15.25rem] h-[4.5rem] peer rounded-[1.25rem] ${(!errorUsername)?'bg-transparent border-dgr':'bg-[#190F0F] border-[#FF7E7E]'} border  px-[1rem] focus:pt-[0.75rem] ${!username? 'pt-0':'pt-[0.75rem]'} outline-none box-border`}/> 
+    <label className={`absolute pointer-events-none peer-focus:top-2 peer-focus:text-[0.875rem] ${(errorUsername)?'text-err':'peer-focus:text-dgr'} ${!username? 'top-[31.2%]': 'top-2 text-dgr text-[0.875rem]'} left-[1rem]`} for="user">Username</label>
+    {errorUsername&&<span className='text-[0.875rem] text-err absolute left-0 bottom-[-35%]'>{errorUsername}</span>}
+
   </div>
   </div>
   <div className='relative mb-[1.35rem]'>
     <input type={showPassword?'text':'password'} required id="pwd"
     value={password}
     onChange={handlePasswordChange}
-    name="pwd" className={`w-[31.5rem] h-[4.5rem] peer rounded-[1.25rem] ${(isValidPassword)?'bg-transparent border-dgr':'bg-[#190F0F] border-[#FF7E7E]'} border px-[1rem] focus:pt-[0.75rem] pr-[3rem] ${!password? 'pt-0':'pt-[0.75rem]'} outline-none box-border`}/>
+    name="pwd" className={`w-[31.5rem] h-[4.5rem] peer rounded-[1.25rem] ${(!errorPassword)?'bg-transparent border-dgr':'bg-[#190F0F] border-[#FF7E7E]'} border px-[1rem] focus:pt-[0.75rem] pr-[3rem] ${!password? 'pt-0':'pt-[0.75rem]'} outline-none box-border`}/>
     <div className='absolute right-4 top-6 cursor-pointer' onClick={passwordShow}>
         <Image src={showPassword?Fa:Fahid} />
       </div> 
-    <label className={`absolute pointer-events-none peer-focus:top-2 peer-focus:text-[0.875rem] ${(isValidPassword)?'peer-focus:text-dgr':'peer-focus:text-[#FF7E7E] text-[#FF7E7E]'} ${!password? 'top-[31.2%]': 'top-2 text-dgr text-[0.875rem]'} left-[1rem]`} for="pwd">Enter password</label>
+    <label className={`absolute pointer-events-none peer-focus:top-2 peer-focus:text-[0.875rem] ${(errorPassword)?'text-err':'peer-focus:text-dgr'} ${!password? 'top-[31.2%]': 'top-2 text-dgr text-[0.875rem]'} left-[1rem]`} for="pwd">Enter password</label>
+    {errorPassword&&<span className='text-[0.875rem] text-err absolute left-0 bottom-[-35%]'>{errorPassword}</span>}
+
   </div>
   </div>
   <button className=' bg-white active:bg-blue text-black text-[1.375rem] w-[31.7rem] h-[4rem] px-6 pt-3 pb-[0.625rem] rounded-[1.25rem]'>

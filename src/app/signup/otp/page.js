@@ -8,10 +8,10 @@ import Otpil from '../../../../public/otp.svg'
 import Image from 'next/image';
 import axios from '@/api/axios';
 import OTPInput from 'react-otp-input';
-import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import ResendOtp from '@/components/resendOtp';
+import toast from 'react-hot-toast';
 // import { cookies } from 'next/headers';
 import cookie from 'js-cookie'
 function Otp() {
@@ -28,9 +28,10 @@ function Otp() {
         {headers:{'Content-Type':'application/json; charset=utf-8'},
           withCredentials: false});
           console.log(response.data.message);
+          toast.success("OTP verified!")
           router.push('/login')
           // if(response.data.success){
-          // toast.success("OTP verified!")
+       
           //   if(!sign)
           // {token=response.data.data.token;
           // localStorage.setItem("Ftoken",token);
@@ -44,7 +45,7 @@ function Otp() {
   }catch(err){
   if(err.response){
   console.log('Server responded');
-  // toast.error("OTP is invalid");
+  toast.error("OTP is invalid");
   setError("Invalid OTP");
   console.log(err.response.data.message);
   }

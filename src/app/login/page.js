@@ -10,8 +10,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import checkbox from '../../../public/checkbox.svg'
 import axios from '@/api/axios';
-import { useRouter } from 'next/router';
-
+import toast from 'react-hot-toast';
 function Login() {
   const [inputValue, setInputValue] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
@@ -52,12 +51,14 @@ if(isValidEmail)
       {headers:{'Content-Type':'application/json; charset=utf-8'},
         withCredentials: false});
         console.log("signup success");
+        toast.success('Login Successful');
         console.log(response)
 }catch(err){
     console.log(err.response);
 if(err.response){
 console.log('Server responded');
 console.log(err.response);
+toast.error(err.response.data.message);
 
   }}
 }
@@ -69,11 +70,13 @@ else if(isValidUsername)
       {headers:{'Content-Type':'application/json; charset=utf-8'},
         withCredentials: false});
         console.log("signup success");
+        toast.success('Login Successful');
 }catch(err){
     console.log(err.response);
 if(err.response){
 console.log('Server responded');
 console.log(err.response);
+toast.error(err.response.data.message);
 
   }}
 }

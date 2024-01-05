@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 // import jsCookie from 'js-cookie';
 import cookie from 'js-cookie'
+import toast from 'react-hot-toast';
 function Signup() {
   const router = useRouter();
   const [email, setEmail] = useState('');
@@ -54,6 +55,7 @@ function Signup() {
         const response = await axios.post('api/auth/sign-up',{username:username,email:email,password:password},
           {headers:{'Content-Type':'application/json; charset=utf-8'},
             withCredentials: false});
+            toast.success("OTP sent successfully");
             router.push('/signup/otp');
             console.log("otp sent success");
     }catch(err){
@@ -61,6 +63,7 @@ function Signup() {
     if(err.response){
     console.log('Server responded');
     console.log(err.response);
+    toast.error(err.response.data.message);
 
       }}}}
       const handleGoogle = async (event) => {

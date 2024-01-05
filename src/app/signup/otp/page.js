@@ -11,11 +11,13 @@ import OTPInput from 'react-otp-input';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { cookies } from 'next/headers';
 function Otp() {
   const router=useRouter();
   const [otp, setOtp] = useState('');
   const [error,setError]= useState('')
-  // const em=localStorage.getItem("signupEmail");
+  const cookieStore = cookies();
+  // const em = cookieStore.get("email");
   const handleSubmit = async (event) => {
     event.preventDefault();
     if(otp.length==6){
@@ -64,7 +66,7 @@ function Otp() {
           <div className='flex flex-col text-dgr'>
             <span className='text-[2.5rem] text-lgr mb-5 leading-[1.125rem]'>Enter OTP</span>
             Please enter the 6-digit code sent to you at
-            {/* <span className='text-lgr'>{em}</span> */}
+            {/* <span className='text-lgr'>{em}</span>  */}
           </div>
           <OTPInput
       value={otp}
@@ -75,7 +77,7 @@ function Otp() {
       inputStyle={`mr-4 h-[3.125rem] min-w-[3.125rem] text-[1.375rem] bg-transparent text-white rounded-[0.8125rem] border ${otp.length==6||otp.length==0?'border-dgr':'border-[#FF7E7E]'} outline-none` } 
     />
     {error&&<span>{error}</span>}
-    <button className='bg-white mt-[2rem] text-black text-[1.375rem] w-[31.7rem] h-[4rem] px-6 pt-3 pb-[0.625rem] rounded-[1.25rem]'>
+    <button onClick={handleSubmit} className='bg-white mt-[2rem] text-black text-[1.375rem] w-[31.7rem] h-[4rem] px-6 pt-3 pb-[0.625rem] rounded-[1.25rem]'>
 Verify
     </button>
  </div>

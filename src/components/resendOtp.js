@@ -1,5 +1,5 @@
 import React, { useState ,useEffect } from 'react'
-import axios from '../../../api/axios';
+import axios from '@/api/axios';
 import { ToastContainer ,toast} from 'react-toastify';
 function ResendOtp({email}) {
 const [seconds, setSeconds] = useState(59);

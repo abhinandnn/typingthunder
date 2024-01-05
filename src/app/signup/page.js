@@ -1,4 +1,4 @@
-"use client"
+'use client'
 import React from 'react'
 import { useState } from 'react';
 import { Typewriter } from 'react-simple-typewriter'
@@ -10,6 +10,7 @@ import Image from 'next/image';
 import axios from '@/api/axios';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+// import { cookies } from "next/headers";
 function Signup() {
   const router = useRouter();
   const [email, setEmail] = useState('');
@@ -42,8 +43,8 @@ function Signup() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // localStorage.setItem("signupEmail",email);  
-    try{
+    // cookies().set("email", email);
+        try{
         const response = await axios.post('api/auth/sign-up',{username:username,email:email,password:password},
           {headers:{'Content-Type':'application/json; charset=utf-8'},
             withCredentials: false});
@@ -114,15 +115,15 @@ function Signup() {
     <input type="text" required id="user"
     value={email}
     onChange={handleEmailChange}
-    name="user" className={`w-[15.25rem] h-[4.5rem] peer rounded-[1.25rem] ${(isValidUsername||isValidEmail)?'bg-transparent border-dgr':'bg-[#190F0F] border-[#FF7E7E]'} border  px-[1rem] focus:pt-[0.75rem] ${!email? 'pt-0':'pt-[0.75rem]'} outline-none box-border`}/> 
-    <label className={`absolute pointer-events-none peer-focus:top-2 peer-focus:text-[0.875rem] ${(isValidUsername||isValidEmail)?'peer-focus:text-dgr':'peer-focus:text-[#FF7E7E] text-[#FF7E7E]'} ${!email? 'top-[31.2%]': 'top-2 text-dgr text-[0.875rem]'} left-[1rem]`} for="user">Enter email</label>
+    name="user" className={`w-[15.25rem] h-[4.5rem] peer rounded-[1.25rem] ${(isValidEmail)?'bg-transparent border-dgr':'bg-[#190F0F] border-[#FF7E7E]'} border  px-[1rem] focus:pt-[0.75rem] ${!email? 'pt-0':'pt-[0.75rem]'} outline-none box-border`}/> 
+    <label className={`absolute pointer-events-none peer-focus:top-2 peer-focus:text-[0.875rem] ${(isValidEmail)?'peer-focus:text-dgr':'peer-focus:text-[#FF7E7E] text-[#FF7E7E]'} ${!email? 'top-[31.2%]': 'top-2 text-dgr text-[0.875rem]'} left-[1rem]`} for="user">Enter email</label>
   </div>
   <div className='relative  mb-[2.6rem]'>
     <input type="text" required id="user"
     value={username}
     onChange={handleUsernameChange}
-    name="user" className={`w-[15.25rem] h-[4.5rem] peer rounded-[1.25rem] ${(isValidUsername||isValidEmail)?'bg-transparent border-dgr':'bg-[#190F0F] border-[#FF7E7E]'} border  px-[1rem] focus:pt-[0.75rem] ${!username? 'pt-0':'pt-[0.75rem]'} outline-none box-border`}/> 
-    <label className={`absolute pointer-events-none peer-focus:top-2 peer-focus:text-[0.875rem] ${(isValidUsername||isValidEmail)?'peer-focus:text-dgr':'peer-focus:text-[#FF7E7E] text-[#FF7E7E]'} ${!username? 'top-[31.2%]': 'top-2 text-dgr text-[0.875rem]'} left-[1rem]`} for="user">Username</label>
+    name="user" className={`w-[15.25rem] h-[4.5rem] peer rounded-[1.25rem] ${(isValidUsername)?'bg-transparent border-dgr':'bg-[#190F0F] border-[#FF7E7E]'} border  px-[1rem] focus:pt-[0.75rem] ${!username? 'pt-0':'pt-[0.75rem]'} outline-none box-border`}/> 
+    <label className={`absolute pointer-events-none peer-focus:top-2 peer-focus:text-[0.875rem] ${(isValidUsername)?'peer-focus:text-dgr':'peer-focus:text-[#FF7E7E] text-[#FF7E7E]'} ${!username? 'top-[31.2%]': 'top-2 text-dgr text-[0.875rem]'} left-[1rem]`} for="user">Username</label>
   </div>
   </div>
   <div className='relative mb-[1.35rem]'>

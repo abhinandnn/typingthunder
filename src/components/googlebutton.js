@@ -2,7 +2,7 @@ import React from 'react'
 
 function Googlebutton() {
   return (
-    <button className='bg-transparent flex flex-row justify-center items-center gap-4 border border-dgr text-[1.125rem] w-[31.7rem] h-[4rem] px-[8.56rem] py-[1rem] rounded-[1.25rem]'>
+    <button type='button' className='bg-transparent flex flex-row justify-center items-center gap-4 border border-dgr text-[1.125rem] w-[31.7rem] h-[4rem] px-[8.56rem] py-[1rem] rounded-[1.25rem]'>
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_607_111)">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M23.52 12.2728C23.52 11.4218 23.4436 10.6037 23.3018 9.81821H12V14.46H18.4582C18.18 15.96 17.3345 17.2309 16.0636 18.0818V21.0928H19.9418C22.2109 19.0037 23.52 15.9273 23.52 12.2728Z" fill="#4285F4"/>

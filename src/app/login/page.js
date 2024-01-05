@@ -17,6 +17,9 @@ function Login() {
   const [isValidUsername, setIsValidUsername] = useState(true);
   const [password,setPassword]=useState('')
   const [showPassword, setShowPassword] = useState(false);
+  const [error,setError]=useState(false);
+  const [errorPassword, setErrorPassword]= useState(false);
+
 
   const passwordShow = () => {
     setShowPassword(!showPassword);}
@@ -25,7 +28,7 @@ function Login() {
     const value = event.target.value;
     setInputValue(value);
 
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/;
     const isEmail = emailRegex.test(value);
     setIsValidEmail(isEmail);
     const usernameRegex = /^[a-zA-Z0-9_.]+$/;
@@ -36,16 +39,23 @@ function Login() {
       setIsValidEmail(true);
       setIsValidUsername(true);
     }
+    if(!(isEmail||isUsername||value.length===0))
+    setError("Doesn't look like an email or username. Try again");
+  else
+  setError('');
   };
   const handlePasswordChange = (event) => {
     const value=event.target.value;
     setPassword(value);
+    setErrorPassword('');
   }
 
   const handleSubmit = async(event) => {
     event.preventDefault();
-if(isValidEmail)
+    
+if(isValidEmail&&!error&&!errorPassword)
 {
+    setErrorPassword('');
   try{
     const response = await axios.post('api/auth/sign-in/email',{email:inputValue,password:password},
       {headers:{'Content-Type':'application/json; charset=utf-8'},
@@ -59,12 +69,13 @@ if(err.response){
 console.log('Server responded');
 console.log(err.response);
 toast.error(err.response.data.message);
-
+if(err.response.data.message=="No user exists with this email")
+setError('User not found')
   }}
 }
-else if(isValidUsername)
+else if(isValidUsername&&!error&&!errorPassword)
 {
-  
+    setErrorPassword('');
   try{
     const response = await axios.post('api/auth/sign-in/username',{username:inputValue,password:password},
       {headers:{'Content-Type':'application/json; charset=utf-8'},
@@ -77,7 +88,11 @@ if(err.response){
 console.log('Server responded');
 console.log(err.response);
 toast.error(err.response.data.message);
-
+if(err.response.data.message=="No user exists with this username")
+{setError('User not found');
+console.log('heelo');}
+else
+setErrorPassword('Wrong Password')
   }}
 }
    
@@ -119,18 +134,21 @@ toast.error(err.response.data.message);
     <input type="text" required id="user"
     value={inputValue}
     onChange={handleInputChange}
-    name="user" className={`w-[31.5rem] h-[4.5rem] peer rounded-[1.25rem] ${(isValidUsername||isValidEmail)?'bg-transparent border-dgr':'bg-[#190F0F] border-[#FF7E7E]'} border  px-[1rem] focus:pt-[0.75rem] ${!inputValue? 'pt-0':'pt-[0.75rem]'} outline-none box-border`}/> 
-    <label className={`absolute pointer-events-none peer-focus:top-2 peer-focus:text-[0.875rem] ${(isValidUsername||isValidEmail)?'peer-focus:text-dgr':'peer-focus:text-[#FF7E7E] text-[#FF7E7E]'} ${!inputValue? 'top-[31.2%]': 'top-2 text-dgr text-[0.875rem]'} left-[1rem]`} for="user">Enter username or registered email</label>
+    name="user" className={`w-[31.5rem] h-[4.5rem] peer rounded-[1.25rem] ${(!error)?'bg-transparent border-dgr':'bg-[#190F0F] border-[#FF7E7E]'} border  px-[1rem] focus:pt-[0.75rem] ${!inputValue? 'pt-0':'pt-[0.75rem]'} outline-none box-border`}/> 
+    <label className={`absolute pointer-events-none peer-focus:top-2 peer-focus:text-[0.875rem] ${error?'text-err':'peer-focus:text-dgr'}  ${!inputValue? 'top-[31.2%]': `top-2  text-dgr text-[0.875rem]`} left-[1rem]`} for="user">Enter username or registered email</label>
+    {error&&inputValue.length>0&&<span className='text-[0.875rem] text-err absolute left-0 bottom-[-35%]'>{error}</span>}
   </div>
   <div className='relative mb-[2.35rem]'>
     <input type={showPassword?'text':'password'} required id="pwd"
     value={password}
     onChange={handlePasswordChange}
-    name="pwd" className={`w-[31.5rem] h-[4.5rem] peer rounded-[1.25rem] bg-transparent border border-dgr px-[1rem] focus:pt-[0.75rem] pr-[3rem] ${!password? 'pt-0':'pt-[0.75rem]'} outline-none box-border`}/>
+    name="pwd" className={`w-[31.5rem] h-[4.5rem] peer rounded-[1.25rem] ${(!errorPassword)?'bg-transparent border-dgr':'bg-[#190F0F] border-[#FF7E7E]'} border px-[1rem] focus:pt-[0.75rem] pr-[3rem] ${!password? 'pt-0':'pt-[0.75rem]'} outline-none box-border`}/>
     <div className='absolute right-4 top-6 cursor-pointer' onClick={passwordShow}>
         <Image src={showPassword?Fa:Fahid} />
       </div> 
-    <label className={`absolute pointer-events-none peer-focus:top-2 peer-focus:text-[0.875rem] peer-focus:text-dgr ${!password? 'top-[31.2%]': 'top-2 text-dgr text-[0.875rem]'} left-[1rem]`} for="pwd">Enter password</label>
+    <label className={`absolute pointer-events-none peer-focus:top-2 peer-focus:text-[0.875rem] ${errorPassword?'text-err':'peer-focus:text-dgr'} ${!password? 'top-[31.2%]': `top-2 text-dgr text-[0.875rem]`} left-[1rem]`} for="pwd">Enter password</label>
+    {errorPassword&&password.length>0&&<span className='text-[0.875rem] text-err absolute left-0 bottom-[-35%]'>{errorPassword}</span>}
+
   </div>
 <div className='text-right mb-[1rem] cursor-pointer'>Reset password</div>
 <div className='text-[1rem] gap-2 flex flex-row items-center '>

@@ -11,13 +11,14 @@ import OTPInput from 'react-otp-input';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { cookies } from 'next/headers';
+// import { cookies } from 'next/headers';
+import cookie from 'js-cookie'
 function Otp() {
   const router=useRouter();
   const [otp, setOtp] = useState('');
   const [error,setError]= useState('')
-  const cookieStore = cookies();
-  // const em = cookieStore.get("email");
+  // const cookieStore = cookies();
+  const em = cookie.get("email");
   const handleSubmit = async (event) => {
     event.preventDefault();
     if(otp.length==6){
@@ -66,7 +67,7 @@ function Otp() {
           <div className='flex flex-col text-dgr'>
             <span className='text-[2.5rem] text-lgr mb-5 leading-[1.125rem]'>Enter OTP</span>
             Please enter the 6-digit code sent to you at
-            {/* <span className='text-lgr'>{em}</span>  */}
+            <span className='text-lgr'>{em}</span> 
           </div>
           <OTPInput
       value={otp}

@@ -10,7 +10,8 @@ import Image from 'next/image';
 import axios from '@/api/axios';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-// import { cookies } from "next/headers";
+// import jsCookie from 'js-cookie';
+import cookie from 'js-cookie'
 function Signup() {
   const router = useRouter();
   const [email, setEmail] = useState('');
@@ -43,7 +44,7 @@ function Signup() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // cookies().set("email", email);
+    cookie.set("email", email);
         try{
         const response = await axios.post('api/auth/sign-up',{username:username,email:email,password:password},
           {headers:{'Content-Type':'application/json; charset=utf-8'},

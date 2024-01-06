@@ -71,6 +71,8 @@ console.log(err.response);
 toast.error(err.response.data.message);
 if(err.response.data.message=="No user exists with this email")
 setError('User not found')
+else
+setErrorPassword('Wrong Password');
   }}
 }
 else if(isValidUsername&&!error&&!errorPassword)
@@ -90,7 +92,7 @@ console.log(err.response);
 toast.error(err.response.data.message);
 if(err.response.data.message=="No user exists with this username")
 {setError('User not found');
-console.log('heelo');}
+}
 else
 setErrorPassword('Wrong Password')
   }}
@@ -150,7 +152,7 @@ setErrorPassword('Wrong Password')
     {errorPassword&&password.length>0&&<span className='text-[0.875rem] text-err absolute left-0 bottom-[-35%]'>{errorPassword}</span>}
 
   </div>
-<div className='text-right mb-[1rem] cursor-pointer'>Reset password</div>
+<Link href={'/reset'}><div className='text-right mb-[1rem] cursor-pointer'>Reset password</div></Link>
 <div className='text-[1rem] gap-2 flex flex-row items-center '>
   <Image src={checkbox}/>
 Remember me</div>

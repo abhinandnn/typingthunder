@@ -12,17 +12,19 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import ResendOtp from '@/components/resendOtp';
 import toast from 'react-hot-toast';
-// import { cookies } from 'next/headers';
 import cookie from 'js-cookie'
 function Otp() {
   const router=useRouter();
   const [otp, setOtp] = useState('');
   const [error,setError]= useState('')
-  // const cookieStore = cookies();
   const em = cookie.get("email");
+  const handleOtp = (value) => {
+    setOtp(value);
+    setError('');
+  }
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if(otp.length==6){
+    if(otp.length==6&&!error){
     try{
       const response = await axios.post('api/auth/verify-otp',{email:em,otp:otp},
         {headers:{'Content-Type':'application/json; charset=utf-8'},
@@ -74,7 +76,7 @@ function Otp() {
           <div className='flex flex-col relative pb-7'>
           <OTPInput
       value={otp}
-      onChange={setOtp}
+      onChange={handleOtp}
       numInputs={6}
       renderInput={(props) => <input {...props}/>}
       inputType='tel'

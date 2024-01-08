@@ -651,6 +651,14 @@ video {
   padding-top: 3rem;
   padding-bottom: 3rem;
 }
+.py-\[32rem\]{
+  padding-top: 32rem;
+  padding-bottom: 32rem;
+}
+.py-\[2rem\]{
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
 .pb-7{
   padding-bottom: 1.75rem;
 }

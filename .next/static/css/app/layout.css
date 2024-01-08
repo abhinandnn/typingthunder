@@ -497,6 +497,9 @@ video {
 .h-\[100vh\]{
   height: 100vh;
 }
+.h-\[105vh\]{
+  height: 105vh;
+}
 .h-\[3\.125rem\]{
   height: 3.125rem;
 }
@@ -646,14 +649,6 @@ video {
 .py-\[1rem\]{
   padding-top: 1rem;
   padding-bottom: 1rem;
-}
-.py-\[3rem\]{
-  padding-top: 3rem;
-  padding-bottom: 3rem;
-}
-.py-\[32rem\]{
-  padding-top: 32rem;
-  padding-bottom: 32rem;
 }
 .py-\[2rem\]{
   padding-top: 2rem;

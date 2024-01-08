@@ -11,6 +11,7 @@ import Link from 'next/link';
 import checkbox from '../../../public/checkbox.svg'
 import axios from '@/api/axios';
 import toast from 'react-hot-toast';
+import loading1 from '../../../public/loading.svg'
 function Login() {
   const [inputValue, setInputValue] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
@@ -19,7 +20,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error,setError]=useState(false);
   const [errorPassword, setErrorPassword]= useState(false);
-
+ const [loading, setLoading]=useState(false);
 
   const passwordShow = () => {
     setShowPassword(!showPassword);}
@@ -55,15 +56,18 @@ function Login() {
     
 if(isValidEmail&&!error&&!errorPassword)
 {
+    setLoading(true);
     setErrorPassword('');
   try{
     const response = await axios.post('api/auth/sign-in/email',{email:inputValue,password:password},
       {headers:{'Content-Type':'application/json; charset=utf-8'},
         withCredentials: false});
+        setLoading(false);
         console.log("signup success");
         toast.success('Login Successful');
         console.log(response)
 }catch(err){
+  setLoading(false);
     console.log(err.response);
 if(err.response){
 console.log('Server responded');
@@ -78,13 +82,16 @@ setErrorPassword('Wrong Password');
 else if(isValidUsername&&!error&&!errorPassword)
 {
     setErrorPassword('');
+    setLoading(true);
   try{
     const response = await axios.post('api/auth/sign-in/username',{username:inputValue,password:password},
       {headers:{'Content-Type':'application/json; charset=utf-8'},
         withCredentials: false});
+        setLoading(false);
         console.log("signup success");
         toast.success('Login Successful');
 }catch(err){
+  setLoading(false)
     console.log(err.response);
 if(err.response){
 console.log('Server responded');
@@ -157,7 +164,9 @@ setErrorPassword('Wrong Password')
   <Image src={checkbox}/>
 Remember me</div>
   </div>
-<Bigbutton />
+  <button className='bg-white text-black text-[1.375rem] w-[31.7rem] h-[4rem] flex flex-row items-center justify-center px-6 pt-3 pb-[0.625rem] rounded-[1.25rem]'>
+{loading?<Image src={loading1} className='animate-spin'/>:"Continue"
+}</button>
 <Googlebutton />
   </form>
  </div>

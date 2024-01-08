@@ -1,8 +1,7 @@
 {
   "/reset/page": "app/reset/page.js",
   "/reset/otp/page": "app/reset/otp/page.js",
-  "/reset/pwd/page": "app/reset/pwd/page.js",
-  "/login/page": "app/login/page.js",
   "/signup/page": "app/signup/page.js",
-  "/signup/otp/page": "app/signup/otp/page.js"
+  "/reset/pwd/page": "app/reset/pwd/page.js",
+  "/login/page": "app/login/page.js"
 }

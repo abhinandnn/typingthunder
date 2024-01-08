@@ -123,7 +123,10 @@ const passwordValid=/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*#^?&])[A-Za-z\d@$
   </div>
   </div>
 <Bigbutton />
-<Googlebutton />
+<button type='button' className='bg-transparent flex flex-row justify-center items-center gap-4 border border-dgr text-[1.125rem] w-[31.7rem] h-[4rem] px-[5.56rem] py-[1rem] rounded-[1.25rem]'>
+   Continue without changing password
+    </button>
+  
   </form>
  </div>
     </div> 

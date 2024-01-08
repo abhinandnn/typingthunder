@@ -13,10 +13,14 @@ import Link from 'next/link';
 import ResendOtp from '@/components/resendOtp';
 import toast from 'react-hot-toast';
 import cookie from 'js-cookie'
+import loading1 from '../../../../public/loading.svg'
+
 function Otp() {
   const router=useRouter();
   const [otp, setOtp] = useState('');
-  const [error,setError]= useState('')
+  const [error,setError]= useState('');
+  const [loading,setLoading]=useState(false)
+
   const em = cookie.get("email");
   const handleOtp = (value) => {
     setOtp(value);
@@ -25,10 +29,12 @@ function Otp() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if(otp.length==6&&!error){
+      setLoading(true);
     try{
       const response = await axios.post('api/auth/verify-otp',{email:em,otp:otp},
         {headers:{'Content-Type':'application/json; charset=utf-8'},
           withCredentials: false});
+          setLoading(false)
           console.log(response.data.message);
           toast.success("OTP verified!")
           router.push('/login')
@@ -45,6 +51,7 @@ function Otp() {
           //      navigate('/resetpwd')  }        
   
   }catch(err){
+    setLoading(false)
   if(err.response){
   console.log('Server responded');
   toast.error("OTP is invalid");
@@ -85,8 +92,9 @@ function Otp() {
     {error&&otp.length>0&&<span className='text-[1rem] text-err absolute l-0 bottom-[-12%]'>{error}</span>}
     </div>
     <ResendOtp email={em}/>
-    <button onClick={handleSubmit} className='bg-white mt-[2rem] text-black text-[1.375rem] w-[31.7rem] h-[4rem] px-6 pt-3 pb-[0.625rem] rounded-[1.25rem]'>
-Verify
+    <button onClick={handleSubmit} className=' bg-white active:bg-blue text-black text-[1.375rem] w-[31.7rem] h-[4rem] flex flex-row justify-center items-center px-6 pt-3 pb-[0.625rem] rounded-[1.25rem]'>
+  {loading?<Image src={loading1} className='animate-spin'/>:"Verify"
+}
     </button>
  </div>
     </div> 

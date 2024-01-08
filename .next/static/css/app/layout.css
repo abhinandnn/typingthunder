@@ -533,6 +533,14 @@ video {
 .min-w-\[3\.125rem\]{
   min-width: 3.125rem;
 }
+@keyframes spin{
+  to{
+    transform: rotate(360deg);
+  }
+}
+.animate-spin{
+  animation: spin 1s linear infinite;
+}
 .cursor-pointer{
   cursor: pointer;
 }
@@ -645,6 +653,10 @@ video {
   padding-top: 3rem;
   padding-bottom: 3rem;
 }
+.px-\[5\.56rem\]{
+  padding-left: 5.56rem;
+  padding-right: 5.56rem;
+}
 .pb-7{
   padding-bottom: 1.75rem;
 }
@@ -748,6 +760,9 @@ video {
 .outline-none{
   outline: 2px solid transparent;
   outline-offset: 2px;
+}
+.filter{
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 .focus\:pt-\[0\.75rem\]:focus{
   padding-top: 0.75rem;

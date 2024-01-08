@@ -10,12 +10,14 @@ import toast from 'react-hot-toast';
 import resetil from '../../../public/reset.svg'
 import cookie from 'js-cookie'
 import {useRouter} from 'next/navigation';
+import loading1 from '../../../public/loading.svg'
 
 function Reset() {
   const router=useRouter();
   const [inputValue, setInputValue] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [error,setError]=useState(false);
+  const [loading, setLoading]=useState(false);
 
 
 
@@ -39,15 +41,18 @@ function Reset() {
     cookie.set("emailf", inputValue);
 if(!error)
 {
+  setLoading(true);
   try{
     const response = await axios.post('api/auth/forget-password',{email:inputValue},
       {headers:{'Content-Type':'application/json; charset=utf-8'},
         withCredentials: false});
+        setLoading(false);
         console.log("otp sent successfully");
         toast.success('OTP sent Successfully');
         router.push('/reset/otp');
         console.log(response)
 }catch(err){
+  setLoading(false);
     console.log(err.response);
 if(err.response){
 console.log('Server responded');
@@ -87,7 +92,9 @@ setError('User not found')
     {error&&inputValue.length>0&&<span className='text-[0.875rem] text-err absolute left-0 bottom-[-35%]'>{error}</span>}
   </div>
   </div>
-<Bigbutton />
+  <button className='bg-white text-black text-[1.375rem] w-[31.7rem] h-[4rem] flex flex-row items-center justify-center px-6 pt-3 pb-[0.625rem] rounded-[1.25rem]'>
+{loading?<Image src={loading1} className='animate-spin'/>:"Continue"
+}</button>
   </form>
  </div>
     </div> 

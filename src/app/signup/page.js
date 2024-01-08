@@ -9,6 +9,7 @@ import Googlebutton from '@/components/googlebutton';
 import Image from 'next/image';
 import axios from '@/api/axios';
 import { useRouter } from 'next/navigation';
+import loading1 from '../../../public/loading.svg'
 import Link from 'next/link';
 // import jsCookie from 'js-cookie';
 import cookie from 'js-cookie'
@@ -25,7 +26,7 @@ function Signup() {
   const [errorUsername, setErrorUsername]= useState(false);
   const [errorEmail, setErrorEmail]= useState(false);
   const [errorPassword, setErrorPassword]= useState(false);
-
+  const [loading,setLoading]=useState(false)
 
 
   const passwordShow = () => {
@@ -68,14 +69,17 @@ function Signup() {
     event.preventDefault();
     cookie.set("email", email);
     if(!(errorPassword||errorEmail||errorUsername)){
+      setLoading(true)
         try{
         const response = await axios.post('api/auth/sign-up',{username:username,email:email,password:password},
           {headers:{'Content-Type':'application/json; charset=utf-8'},
             withCredentials: false});
+            setLoading(false);
             toast.success("OTP sent successfully");
             router.push('/signup/otp');
             console.log("otp sent success");
     }catch(err){
+      setLoading(false)
         console.log(err.response);
     if(err.response){
     console.log('Server responded');
@@ -172,8 +176,9 @@ function Signup() {
 
   </div>
   </div>
-  <button className=' bg-white active:bg-blue text-black text-[1.375rem] w-[31.7rem] h-[4rem] px-6 pt-3 pb-[0.625rem] rounded-[1.25rem]'>
-Continue
+  <button className=' bg-white active:bg-blue text-black text-[1.375rem] w-[31.7rem] h-[4rem] flex flex-row justify-center items-center px-6 pt-3 pb-[0.625rem] rounded-[1.25rem]'>
+  {loading?<Image src={loading1} className='animate-spin'/>:"Continue"
+}
     </button>
     <button type='button' onClick={handleGoogle} className='bg-transparent flex flex-row justify-center items-center gap-4 border border-dgr text-[1.125rem] w-[31.7rem] h-[4rem] px-[8.56rem] py-[1rem] rounded-[1.25rem]'>
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -107,11 +107,10 @@ setErrorPassword('Wrong Password')
 const handleGoogle = async (event) => {
   event.preventDefault();
   try{
-      const response = await axios.get('api/auth/google/login',
-        {withCredentials: true});
+      const response = await axios.get('api/google/google/login',
+        {withCredentials: false});
           console.log(response);
   }catch(err){
-      console.log(err.response);
   if(err.response){
   console.log('Server responded');
   console.log(err.response);

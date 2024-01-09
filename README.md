@@ -6,15 +6,18 @@
 <p align="center">
   Multiplayer typing test. Built with Nextjs.
 </p>
+
 ## Introduction
-Typing Thunder is a fast-paced and addictive typing game that will test your keyboard prowess like never before! Set in a futuristic world filled with challenges and surprises, TypingThunder combines the thrill of gaming with the essential skill of typing, offering an engaging and educational experience for players of all ages.
+TypingThunder is a fast-paced and addictive typing game that will test your keyboard prowess like never before! Set in a futuristic world filled with challenges and surprises, TypingThunder combines the thrill of gaming with the essential skill of typing, offering an engaging and educational experience for players of all ages.
 
 <p align="center">
-  <img src = "https://imgur.com/zlC2sxV">
+  <img src = "https://imgur.com/zlC2sxV.png">
 </p>
+
 ## Features
 TypingThunder offers you:
 * Test Typing Speed
+* Authentication
 * Practice text of own choice
 * 1v1 Challenge
 * Rating Feature

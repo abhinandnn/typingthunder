@@ -509,6 +509,9 @@ video {
 .h-\[4rem\]{
   height: 4rem;
 }
+.min-h-\[100vh\]{
+  min-height: 100vh;
+}
 .w-\[11\.5rem\]{
   width: 11.5rem;
 }
@@ -754,6 +757,9 @@ video {
 .outline-none{
   outline: 2px solid transparent;
   outline-offset: 2px;
+}
+.hover\:cursor-pointer:hover{
+  cursor: pointer;
 }
 .focus\:pt-\[0\.75rem\]:focus{
   padding-top: 0.75rem;

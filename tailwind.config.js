@@ -11,6 +11,9 @@ module.exports = {
         'lgr': '#e6e6e6',
         'dgr': '#b3b3b3',
         'err': '#FF7E7E'
+      },
+      screens: {
+        'mob': '485px'
       }
     },
   },

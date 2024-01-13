@@ -127,8 +127,8 @@ const passwordValid=/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*#^?&])[A-Za-z\d@$
   </div>
   </div>
 <Bigbutton />
-<button type='button' className='bg-transparent flex flex-row justify-center items-center gap-4 border border-dgr text-[1.125rem] w-[80vw] sm:w-[31.7rem] h-[4rem] px-[5.56rem] py-[1rem] rounded-[1.25rem]'>
-   Continue without changing password
+<button type='button' className='bg-transparent flex flex-row justify-center items-center gap-4 border border-dgr text-[1.125rem] w-[80vw] sm:w-[31.7rem] h-[4rem] px-[1rem] py-[1rem] rounded-[1.25rem]'>
+   Continue without password
     </button>
   
   </form>

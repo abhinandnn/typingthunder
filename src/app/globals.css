@@ -2,3 +2,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: "OCR A Extended";
+    src: url("../../public/fonts/ocra.ttf") format('truetype');
+  }

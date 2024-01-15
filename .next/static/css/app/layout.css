@@ -723,6 +723,9 @@ video {
 .text-right{
   text-align: right;
 }
+.font-ocra{
+  font-family: OCR A Extended, sans-serif;
+}
 .text-\[0\.875rem\]{
   font-size: 0.875rem;
 }
@@ -746,6 +749,9 @@ video {
 }
 .text-\[2\.5rem\]{
   font-size: 2.5rem;
+}
+.text-\[3rem\]{
+  font-size: 3rem;
 }
 .font-bold{
   font-weight: 700;
@@ -807,26 +813,38 @@ video {
   outline: 2px solid transparent;
   outline-offset: 2px;
 }
+
+@font-face {
+    font-family: "OCR A Extended";
+    src: url(webpack:///mini-css-extract-plugin//_next/static/media/ocra.8d53c5dd.ttf) format('truetype');
+  }
+
 .hover\:cursor-pointer:hover{
   cursor: pointer;
 }
+
 .hover\:text-white:hover{
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
+
 .focus\:pt-\[0\.75rem\]:focus{
   padding-top: 0.75rem;
 }
+
 .peer:focus ~ .peer-focus\:top-2{
   top: 0.5rem;
 }
+
 .peer:focus ~ .peer-focus\:text-\[0\.875rem\]{
   font-size: 0.875rem;
 }
+
 .peer:focus ~ .peer-focus\:text-dgr{
   --tw-text-opacity: 1;
   color: rgb(179 179 179 / var(--tw-text-opacity));
 }
+
 @media (min-width: 485px){
   .mob\:static{
     position: static;
@@ -862,6 +880,7 @@ video {
     font-size: 1.375rem;
   }
 }
+
 @media (min-width: 640px){
   .sm\:inline{
     display: inline;
@@ -892,17 +911,20 @@ video {
     padding-right: 8.56rem;
   }
 }
+
 @media (min-width: 768px){
   .md\:px-\[7\.4rem\]{
     padding-left: 7.4rem;
     padding-right: 7.4rem;
   }
 }
+
 @media (min-width: 1280px){
   .xl\:flex{
     display: flex;
   }
 }
+
 /*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[11].oneOf[2].use[1]!./node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[11].oneOf[2].use[2]!./node_modules/next/font/google/target.css?{"path":"src/app/layout.js","import":"Inter","arguments":[{"subsets":["latin"]}],"variableName":"inter"} ***!
   \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/

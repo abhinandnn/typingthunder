@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+    fontFamily: {
+      'ocra': ["OCR A Extended", "sans-serif"],
+    },
       colors: {
         'lgr': '#e6e6e6',
         'dgr': '#b3b3b3',

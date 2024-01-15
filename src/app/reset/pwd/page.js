@@ -78,6 +78,9 @@ const passwordValid=/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*#^?&])[A-Za-z\d@$
             console.log('No Server response');
           }}
           }
+          const wpwd = e =>{
+            router.push('/home');
+          }
           return (
             <div className='bg-[#1a1a1a] font-Poppins min-h-[100vh] min-w-[100vw] px-[10vw] md:px-[7.4rem] py-[2rem] mb-[2rem]'>
                 <div className='flex flex-row items-center justify-between'><div className='flex flex-row gap-2 justify-center items-center mob:text-[1.375rem] text-[1rem] text-[#e6e6e6]'><svg className='hidden mob:flex' width="33" height="31" viewBox="0 0 33 31" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -127,7 +130,7 @@ const passwordValid=/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*#^?&])[A-Za-z\d@$
   </div>
   </div>
 <Bigbutton />
-<button type='button' className='bg-transparent flex flex-row justify-center items-center gap-4 border border-dgr text-[1.125rem] w-[80vw] sm:w-[31.7rem] h-[4rem] px-[1rem] py-[1rem] rounded-[1.25rem]'>
+<button onClick={()=>wpwd} type='button' className='bg-transparent flex flex-row justify-center items-center gap-4 border border-dgr text-[1.125rem] w-[80vw] sm:w-[31.7rem] h-[4rem] px-[1rem] py-[1rem] rounded-[1.25rem]'>
    Continue without password
     </button>
   

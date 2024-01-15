@@ -37,7 +37,7 @@ function Otp() {
           setLoading(false)
           console.log(response.data.message);
           toast.success("OTP verified!")
-          router.push('/login')
+          router.push('/home')
           // if(response.data.success){
        
           //   if(!sign)

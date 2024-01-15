@@ -14,7 +14,9 @@ import smlogo from '../../../public/smlogo.svg'
 import axios from '@/api/axios';
 import toast from 'react-hot-toast';
 import loading1 from '../../../public/loading.svg'
+import { useRouter } from 'next/navigation';
 function Login() {
+  const Router=useRouter();
   const [inputValue, setInputValue] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [isValidUsername, setIsValidUsername] = useState(true);
@@ -68,6 +70,7 @@ if(isValidEmail&&!error&&!errorPassword)
         setLoading(false);
         console.log("signup success");
         toast.success('Login Successful');
+        Router.push('/home');
         console.log(response)
 }catch(err){
   setLoading(false);
@@ -93,6 +96,7 @@ else if(isValidUsername&&!error&&!errorPassword)
         setLoading(false);
         console.log("signup success");
         toast.success('Login Successful');
+
 }catch(err){
   setLoading(false)
     console.log(err.response);

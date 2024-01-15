@@ -10,7 +10,9 @@ module.exports = {
       colors: {
         'lgr': '#e6e6e6',
         'dgr': '#b3b3b3',
-        'err': '#FF7E7E'
+        'err': '#FF7E7E',
+        'dkr': '#1a1a1a'
+
       },
       screens: {
         'mob': '485px'

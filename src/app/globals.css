@@ -5,5 +5,8 @@
 
 @font-face {
     font-family: "OCR A Extended";
-    src: url("../../public/fonts/ocra.ttf") format('truetype');
+    src: url("/fonts/ocra.ttf") format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
   }

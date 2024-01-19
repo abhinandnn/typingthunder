@@ -100,7 +100,7 @@ function Signup() {
       const handleGoogle = async (event) => {
         event.preventDefault();
         try{
-            const response = await axios.get('api/auth/google/login',
+            const response = await axios.get('api/google/google/login',
               {withCredentials: false});
                 console.log(response);
         }catch(err){

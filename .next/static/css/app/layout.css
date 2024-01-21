@@ -470,6 +470,15 @@ video {
 .top-\[31\.2\%\]{
   top: 31.2%;
 }
+.bottom-\[-55\%\]{
+  bottom: -55%;
+}
+.bottom-\[-58\%\]{
+  bottom: -58%;
+}
+.bottom-10{
+  bottom: 2.5rem;
+}
 .m-8{
   margin: 2rem;
 }
@@ -505,6 +514,9 @@ video {
 }
 .mt-\[10rem\]{
   margin-top: 10rem;
+}
+.mt-10{
+  margin-top: 2.5rem;
 }
 .box-border{
   box-sizing: border-box;

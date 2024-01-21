@@ -37,7 +37,7 @@ function Signup() {
     const passwordRegex= /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
     const isPassword=passwordRegex.test(value);
     if(!isPassword&&value)
-    setErrorPassword('Choose a strong password');
+    setErrorPassword('Password must contain a letter, number, special character & it must be of 8 characters ');
   else
   setErrorPassword(false);
     setIsValidPassword(isPassword);
@@ -175,7 +175,7 @@ function Signup() {
         <Image src={showPassword?Fa:Fahid} />
       </div> 
     <label className={`absolute pointer-events-none peer-focus:top-2 peer-focus:text-[0.875rem] ${(errorPassword)?'text-err':'peer-focus:text-dgr'} ${!password? 'top-[31.2%]': 'top-2 text-dgr text-[0.875rem]'} left-[1rem]`} for="pwd">Enter password</label>
-    {errorPassword&&<span className='text-[0.875rem] text-err absolute left-0 bottom-[-35%]'>{errorPassword}</span>}
+    {errorPassword&&<span className='text-[0.875rem] text-err absolute left-0 bottom-[-58%]'>{errorPassword}</span>}
 
   </div>
   </div>

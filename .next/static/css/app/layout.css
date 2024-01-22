@@ -437,11 +437,17 @@ video {
 .relative{
   position: relative;
 }
+.bottom-10{
+  bottom: 2.5rem;
+}
 .bottom-\[-12\%\]{
   bottom: -12%;
 }
 .bottom-\[-35\%\]{
   bottom: -35%;
+}
+.bottom-\[-58\%\]{
+  bottom: -58%;
 }
 .bottom-\[16\%\]{
   bottom: 16%;
@@ -469,15 +475,6 @@ video {
 }
 .top-\[31\.2\%\]{
   top: 31.2%;
-}
-.bottom-\[-55\%\]{
-  bottom: -55%;
-}
-.bottom-\[-58\%\]{
-  bottom: -58%;
-}
-.bottom-10{
-  bottom: 2.5rem;
 }
 .m-8{
   margin: 2rem;
@@ -509,14 +506,14 @@ video {
 .mr-2{
   margin-right: 0.5rem;
 }
+.mt-10{
+  margin-top: 2.5rem;
+}
 .mt-4{
   margin-top: 1rem;
 }
 .mt-\[10rem\]{
   margin-top: 10rem;
-}
-.mt-10{
-  margin-top: 2.5rem;
 }
 .box-border{
   box-sizing: border-box;

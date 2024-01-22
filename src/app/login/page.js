@@ -1,5 +1,6 @@
 "use client"
 import React from 'react'
+import { setTokens, clearTokens } from '../../store/AuthSlice.js'
 import { useState } from 'react';
 import { Typewriter } from 'react-simple-typewriter'
 import Fa from '../../../public/fa.svg'
@@ -14,6 +15,7 @@ import smlogo from '../../../public/smlogo.svg'
 import axios from '@/api/axios';
 import toast from 'react-hot-toast';
 import loading1 from '../../../public/loading.svg'
+import cookie from 'js-cookie'
 import { useRouter } from 'next/navigation';
 function Login() {
   const Router=useRouter();
@@ -68,10 +70,14 @@ if(isValidEmail&&!error&&!errorPassword)
       {headers:{'Content-Type':'application/json; charset=utf-8'},
         withCredentials: false});
         setLoading(false);
-        console.log("signup success");
         toast.success('Login Successful');
+        const { accesstoken, refreshtoken } = response.data.data;
+        setTokens({ accesstoken, refreshtoken });
+    cookie.set("accesstoken", accesstoken);
+    cookie.set("refreshtoken", refreshtoken);
         Router.push('/home');
-        console.log(response)
+        console.log(response);
+
 }catch(err){
   setLoading(false);
     console.log(err.response);

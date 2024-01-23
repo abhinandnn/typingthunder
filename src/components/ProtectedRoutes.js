@@ -11,25 +11,24 @@ const ProtectedRoute = ({ children }) => {
     const dispatch = useDispatch();
     const router = useRouter();
     const token=cookie.get('accesstoken');
-  
+    console.log(token);
+    
     useEffect(() => {
       const checkAuth = async () => {
         if (!token) {
           router.push('/login');
         } else {
-            console.log(token);
           try {
-            response = await axios.post('api/auth/check-token',{headers:{'auth-token':`${token}`}});
+            const response = await axios.post('api/auth/check-token',{},{headers:{'auth-token': `${token}`},withCredentials: false});
+            console.log(response);
         } catch (error) {
-            console.log(error.response)
-            console.log('heyo') 
             await refreshToken();
           }
         }
       };
   
       checkAuth();
-    }, [token]);
+    }, [accesstoken]);
   
     return <>{children}</>;
   };

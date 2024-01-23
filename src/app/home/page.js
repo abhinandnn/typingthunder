@@ -31,8 +31,8 @@ function Login() {
  const [loading, setLoading]=useState(false);
  const [isCheck,setCheck]=useState(true);
 
- const logout1 = () =>{
-  logout();
+ const logout1 = async() =>{
+  await logout();
   router.push('/login')
  }
 

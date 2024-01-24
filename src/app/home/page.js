@@ -19,6 +19,8 @@ import ProtectedRoute from '@/components/ProtectedRoutes';
 import { Provider } from 'react-redux';
 import store from '@/store/store';
 import { useRouter } from 'next/navigation';
+import useTypingGame, { CharStateType } from "react-typing-game-hook";
+import { useEffect } from 'react';
 function Login() {
   const router =useRouter();
   const [inputValue, setInputValue] = useState('');
@@ -31,8 +33,8 @@ function Login() {
  const [loading, setLoading]=useState(false);
  const [isCheck,setCheck]=useState(true);
 
- const logout1 = async() =>{
-  await logout();
+ const logout1 = () =>{
+  logout();
   router.push('/login')
  }
 
@@ -130,7 +132,35 @@ const handleGoogle = async (event) => {
   console.log(err.response);
 
     }}}
+    const {
+      states: { chars, charsState },
+      actions: { insertTyping, resetTyping, deleteTyping }
+    } = useTypingGame("Most of them are based on basic text fields that were modified to better handle specific types of information, like the credit card numbers. Here are just a few examples of input types that are most commonly used throughout UIs we creating.");
+    useEffect(() => {
+      const handleKeyDown = (e) => {
+        e.preventDefault();
+        const key = e.key;
+        if (key === 'R' && e.shiftKey) {
+          resetTyping();
+          return;
+        }
+        if (key === 'Backspace') {
+          deleteTyping(false);
+          return;
+        }
+        if (key.length === 1) {
+          insertTyping(key);
+        }
+      };
   
+      document.addEventListener('keydown', handleKeyDown);
+  
+      // Cleanup the event listener to avoid memory leaks
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown);
+      };
+    }, [insertTyping, resetTyping, deleteTyping]);
+
   return (
     <Provider store={store}>
     <ProtectedRoute>
@@ -172,8 +202,38 @@ Rating
   
 </div>
 </div>
-<div className='text-[2rem] text-white font-ocra mt-[10rem]'>
-Most of them are based on basic text fields that were modified to better handle specific types of information, like the credit card numbers. Here are just a few examples of input types that are most commonly used throughout UIs we creating.
+<div className='text-[2rem] text-white font-ocra mt-[10rem]'
+      onKeyDown={(e) => {
+        e.preventDefault();
+        const key = e.key;
+        if (key === "R"&&e.shiftKey) {
+          resetTyping();
+          return;
+        }
+        if (key === "Backspace") {
+          deleteTyping(false);
+          return;
+        }
+        if (key.length === 1) {
+          insertTyping(key);
+        }
+      }}
+      tabIndex={0}
+    >
+      {chars.split("").map((char, index) => {
+        let state = charsState[index];
+        let color =
+          state === CharStateType.Incomplete
+            ? "#666"
+            : state === CharStateType.Correct
+            ? "#FFF"
+            : "#FF7E7E";
+        return (
+          <span key={char + index} style={{ color }}>
+            {char}
+          </span>
+        );
+      })}
 </div>
 <div className='flex gap-5 items-center mt-10 justify-center'>
   <div className='flex justify-center items-center gap-5 w-[6.5rem] text-[1.25rem] text-[#4d4d4d] box-border px-[1.25rem] h-[3.5rem] rounded-[1875rem] bg-black border-2 border-[#333]'>

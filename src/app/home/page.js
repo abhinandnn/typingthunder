@@ -203,22 +203,6 @@ Rating
 </div>
 </div>
 <div className='text-[2rem] text-white font-ocra mt-[10rem]'
-      onKeyDown={(e) => {
-        e.preventDefault();
-        const key = e.key;
-        if (key === "R"&&e.shiftKey) {
-          resetTyping();
-          return;
-        }
-        if (key === "Backspace") {
-          deleteTyping(false);
-          return;
-        }
-        if (key.length === 1) {
-          insertTyping(key);
-        }
-      }}
-      tabIndex={0}
     >
       {chars.split("").map((char, index) => {
         let state = charsState[index];

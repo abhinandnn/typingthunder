@@ -37,7 +37,7 @@ function Signup() {
     const passwordRegex= /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
     const isPassword=passwordRegex.test(value);
     if(!isPassword&&value)
-    setErrorPassword('Password must contain a letter, number, special character & it must be of 8 characters ');
+    setErrorPassword('Password must contain a letter, number, special character & it must be of 8 characters');
   else
   setErrorPassword(false);
     setIsValidPassword(isPassword);

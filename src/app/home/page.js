@@ -21,127 +21,27 @@ import store from '@/store/store';
 import { useRouter } from 'next/navigation';
 import useTypingGame, { CharStateType } from "react-typing-game-hook";
 import { useEffect } from 'react';
-function Login() {
+import Score from '@/components/score';
+import Results from '@/components/results';
+function Home() {
   const router =useRouter();
-  const [inputValue, setInputValue] = useState('');
-  const [isValidEmail, setIsValidEmail] = useState(true);
-  const [isValidUsername, setIsValidUsername] = useState(true);
-  const [password,setPassword]=useState('')
-  const [showPassword, setShowPassword] = useState(false);
-  const [error,setError]=useState(false);
-  const [errorPassword, setErrorPassword]= useState(false);
- const [loading, setLoading]=useState(false);
- const [isCheck,setCheck]=useState(true);
-
+const [maxt,setMaxt]=useState(15);
+const [t,setT]=useState(0)
  const logout1 = () =>{
   logout();
   router.push('/login')
  }
-
-  const passwordShow = () => {
-    setShowPassword(!showPassword);}
-
-  const handleInputChange = (event) => {
-    const value = event.target.value;
-    setInputValue(value);
-
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/;
-    const isEmail = emailRegex.test(value);
-    setIsValidEmail(isEmail);
-    const usernameRegex = /^[a-zA-Z0-9_.]+$/;
-    const isUsername = usernameRegex.test(value);
-    setIsValidUsername(isUsername);
-    if(value=='')
-    {
-      setIsValidEmail(true);
-      setIsValidUsername(true);
-    }
-    if(!(isEmail||isUsername||value.length===0))
-    setError("Doesn't look like an email or username. Try again");
-  else
-  setError('');
-  };
-  const handlePasswordChange = (event) => {
-    const value=event.target.value;
-    setPassword(value);
-    setErrorPassword('');
-  }
-
-  const handleSubmit = async(event) => {
-    event.preventDefault();
-    
-if(isValidEmail&&!error&&!errorPassword)
-{
-    setLoading(true);
-    setErrorPassword('');
-  try{
-    const response = await axios.post('api/auth/sign-in/email',{email:inputValue,password:password},
-      {headers:{'Content-Type':'application/json; charset=utf-8'},
-        withCredentials: false});
-        setLoading(false);
-        console.log("signup success");
-        toast.success('Login Successful');
-        console.log(response)
-}catch(err){
-  setLoading(false);
-    console.log(err.response);
-if(err.response){
-console.log('Server responded');
-console.log(err.response);
-toast.error(err.response.data.message);
-if(err.response.data.message=="No user exists with this email")
-setError('User not found')
-else
-setErrorPassword('Wrong Password');
-  }}
-}
-else if(isValidUsername&&!error&&!errorPassword)
-{
-    setErrorPassword('');
-    setLoading(true);
-  try{
-    const response = await axios.post('api/auth/sign-in/username',{username:inputValue,password:password},
-      {headers:{'Content-Type':'application/json; charset=utf-8'},
-        withCredentials: false});
-        setLoading(false);
-        console.log("signup success");
-        toast.success('Login Successful');
-}catch(err){
-  setLoading(false)
-    console.log(err.response);
-if(err.response){
-console.log('Server responded');
-console.log(err.response);
-toast.error(err.response.data.message);
-if(err.response.data.message=="No user exists with this username")
-{setError('User not found');
-}
-else
-setErrorPassword('Wrong Password')
-  }}
-}}
-const handleGoogle = async (event) => {
-  event.preventDefault();
-  try{
-      const response = await axios.get('api/google/google/login',
-        {withCredentials: false});
-          console.log(response);
-  }catch(err){
-  if(err.response){
-  console.log('Server responded');
-  console.log(err.response);
-
-    }}}
     const {
-      states: { chars, charsState },
-      actions: { insertTyping, resetTyping, deleteTyping }
+      states: { chars, charsState, phase },
+      actions: { insertTyping, resetTyping, deleteTyping, getDuration, endTyping}
     } = useTypingGame("Most of them are based on basic text fields that were modified to better handle specific types of information, like the credit card numbers. Here are just a few examples of input types that are most commonly used throughout UIs we creating.");
     useEffect(() => {
       const handleKeyDown = (e) => {
         e.preventDefault();
         const key = e.key;
         if (key === 'R' && e.shiftKey) {
-          resetTyping();
+         resetTyping();
+          setT(0);
           return;
         }
         if (key === 'Backspace') {
@@ -154,17 +54,28 @@ const handleGoogle = async (event) => {
       };
   
       document.addEventListener('keydown', handleKeyDown);
-  
-      // Cleanup the event listener to avoid memory leaks
+                                                                                                                                             
       return () => {
         document.removeEventListener('keydown', handleKeyDown);
       };
-    }, [insertTyping, resetTyping, deleteTyping]);
-
+    }, [insertTyping, resetTyping, deleteTyping, endTyping]);
+    const duration =()=>{
+      const newt=getDuration();
+      if(newt!=0&&newt<maxt*1000)
+      setTimeout(duration,100);
+      else if(newt-maxt*1000>0){
+      setT(newt);
+      endTyping();
+      
+      return clearTimeout(duration);
+          }}
+      setTimeout(duration,100);
+      
   return (
     <Provider store={store}>
     <ProtectedRoute>
-    <div className='bg-dkr font-Poppins min-h-[100vh] min-w-[100vw] px-[10vw] md:px-[7.4rem] py-[2rem]'>
+      <div className='bg-dkr font-Poppins min-h-[100vh] min-w-[100vw] px-[10vw] md:px-[7.4rem] py-[2rem]'>
+    <div className='relative'>
         <div className='flex flex-row justify-start items-center gap-[7rem]'><div className='flex flex-row gap-2 justify-center items-center mob:text-[1.375rem] text-[1rem] text-[#e6e6e6]'><svg className='hidden mob:flex' width="33" height="31" viewBox="0 0 33 31" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M19.5869 6.12437H29.156C29.508 6.12437 29.8272 5.93937 30.0077 5.63725L32.4717 1.51288C32.87 0.846325 32.3897 0 31.6133 0H3.10206C2.70651 0 2.34813 0.23315 2.18784 0.594763L0.35966 4.71913C0.0665792 5.38032 0.550228 6.12437 1.27346 6.12437H11.309L6.18637 16.5652C5.86037 17.2296 6.34403 18.0056 7.08413 18.0056H9.68913C10.3854 18.0056 10.8686 18.6995 10.627 19.3526L7.62394 27.4705C7.2338 28.5251 8.61216 29.3214 9.33089 28.4566L21.7676 13.4923C22.2866 12.8679 21.8844 11.918 21.0749 11.8561L18.1564 11.6327C17.4301 11.5771 17.005 10.7885 17.3578 10.1513L19.5869 6.12437Z" fill="#E6E6E6"/>
 </svg>
@@ -202,7 +113,8 @@ Rating
   
 </div>
 </div>
-<div className='text-[2rem] text-white font-ocra mt-[10rem]'
+{(t-maxt*1000<0)&&!t?<div>
+<div className='text-[2rem] w-max-[100%] text-white font-ocra mt-[10rem]'
     >
       {chars.split("").map((char, index) => {
         let state = charsState[index];
@@ -219,7 +131,7 @@ Rating
         );
       })}
 </div>
-<div className='flex gap-5 items-center mt-10 justify-center'>
+<div className='flex gap-5 items-center w-max-[100%] mt-10 justify-center'>
   <div className='flex justify-center items-center gap-5 w-[6.5rem] text-[1.25rem] text-[#4d4d4d] box-border px-[1.25rem] h-[3.5rem] rounded-[1875rem] bg-black border-2 border-[#333]'>
 <span className='hover:text-white'>@</span>
 <span className='hover:text-white'>#</span>
@@ -237,15 +149,18 @@ Rating
 <span className='hover:text-white'>T</span>
   </div>
 
-  <div className='flex justify-center items-center gap-[2.6rem] w-[16.75rem] text-[1.25rem] text-[#4d4d4d] box-border px-[1.25rem] h-[3.5rem] rounded-[1875rem] bg-black border-2 border-[#333]'>
-<span className='hover:text-white'>15</span>
-<span className='hover:text-white'>30</span>
-<span className='hover:text-white'>60</span>
-<span className='hover:text-white'>120</span>
-  </div>
+  <div className='flex justify-center items-center gap-[2.3rem] w-[16.75rem] text-[1.25rem] text-[#4d4d4d] box-border px-[1.25rem] h-[3.5rem] rounded-[1875rem] bg-black border-2 border-[#333]'>
+<div onClick={()=>setMaxt(15)} className={maxt===15?'bg-[#1a1a1a] rounded-full min-w-[2.5rem] h-[2.5rem] flex justify-center items-center text-white':''}><span className='hover:text-white cursor-pointer'>15</span></div>
+<div onClick={()=>setMaxt(30)} className={maxt===30?'bg-[#1a1a1a] rounded-full min-w-[2.5rem] h-[2.5rem] flex justify-center items-center text-white':''}><span className='hover:text-white cursor-pointer'>30</span></div>
+<div onClick={()=>setMaxt(60)} className={maxt===60?'bg-[#1a1a1a] rounded-full min-w-[2.5rem] h-[2.5rem] flex justify-center items-center text-white':''}><span className='hover:text-white cursor-pointer'>60</span></div>
+<div onClick={()=>setMaxt(120)} className={maxt===120?'bg-[#1a1a1a] rounded-full min-w-[2.5rem] h-[2.5rem] flex justify-center items-center text-white':''}><span className='hover:text-white cursor-pointer'>120</span></div>
 
+  </div>
 </div>
-<div className='flex absolute bottom-10 gap-4 m-8'>
+</div>:
+<Results/>}
+
+<div className='flex absolute justify-center items-center w-[100%] box-border bottom-[-25%] gap-4 '>
   <div className='text-[#666666] flex items-center gap-2'>
   <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M3 4.5L7.58073 7.9592L7.58225 7.96047C8.09089 8.33346 8.34535 8.52007 8.62407 8.59216C8.87042 8.65588 9.12938 8.65588 9.37573 8.59216C9.6547 8.52001 9.9099 8.33285 10.4194 7.9592C10.4194 7.9592 13.3576 5.70445 15 4.5M2.25 11.8501V6.15015C2.25 5.31007 2.25 4.88972 2.41349 4.56885C2.5573 4.2866 2.7866 4.0573 3.06885 3.91349C3.38972 3.75 3.81007 3.75 4.65015 3.75H13.3501C14.1902 3.75 14.6097 3.75 14.9305 3.91349C15.2128 4.0573 15.4429 4.2866 15.5867 4.56885C15.75 4.8894 15.75 5.30925 15.75 6.14768V11.8527C15.75 12.6911 15.75 13.1104 15.5867 13.4309C15.4429 13.7132 15.2128 13.9429 14.9305 14.0867C14.61 14.25 14.1908 14.25 13.3523 14.25H4.64768C3.80925 14.25 3.3894 14.25 3.06885 14.0867C2.7866 13.9429 2.5573 13.7132 2.41349 13.4309C2.25 13.11 2.25 12.6902 2.25 11.8501Z" stroke="#666666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -298,9 +213,10 @@ Rating
   </div>
 </div>
 </div>
+</div>
 </ProtectedRoute>
 </Provider>
   )
 }
 
-export default Login
+export default Home

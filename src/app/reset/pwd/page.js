@@ -44,7 +44,7 @@ const passwordValid=/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*#^?&])[A-Za-z\d@$
         let errorMessage = "";
         if (name === "password") {
             if (!passwordValid.test(value)&&value!=="") {
-              errorMessage = "Choose a strong password";
+              errorMessage = "Password must contain a letter, number, special character & it must be of 8 characters";
             }
             setErrorPassword(errorMessage);}
             if(name==="password")

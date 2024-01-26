@@ -26,14 +26,18 @@ import Results from '@/components/results';
 function Home() {
   const router =useRouter();
 const [maxt,setMaxt]=useState(15);
+const [WPM,setWPM]=useState(0);
+const [accu,setAccu]=useState(0);
+const [raw,setRaw]=useState(0);
 const [t,setT]=useState(0)
  const logout1 = () =>{
   logout();
   router.push('/login')
  }
+ let newt=0;
     const {
-      states: { chars, charsState, phase },
-      actions: { insertTyping, resetTyping, deleteTyping, getDuration, endTyping}
+      states: { chars, charsState, phase, correctChar,errorChar,currIndex },
+      actions: { insertTyping, resetTyping, deleteTyping, getDuration, endTyping,}
     } = useTypingGame("Most of them are based on basic text fields that were modified to better handle specific types of information, like the credit card numbers. Here are just a few examples of input types that are most commonly used throughout UIs we creating.");
     useEffect(() => {
       const handleKeyDown = (e) => {
@@ -41,8 +45,7 @@ const [t,setT]=useState(0)
         const key = e.key;
         if (key === 'R' && e.shiftKey) {
          resetTyping();
-          setT(0);
-          return;
+         return;
         }
         if (key === 'Backspace') {
           deleteTyping(false);
@@ -52,25 +55,35 @@ const [t,setT]=useState(0)
           insertTyping(key);
         }
       };
-  
       document.addEventListener('keydown', handleKeyDown);
                                                                                                                                              
       return () => {
         document.removeEventListener('keydown', handleKeyDown);
       };
     }, [insertTyping, resetTyping, deleteTyping, endTyping]);
+      useEffect(()=>{
     const duration =()=>{
-      const newt=getDuration();
-      if(newt!=0&&newt<maxt*1000)
+      console.log(newt)
+      newt=getDuration();
+      setT(newt);
+      if(newt!=0&&(newt<maxt*1000))
       setTimeout(duration,100);
       else if(newt-maxt*1000>0){
-      setT(newt);
       endTyping();
-      
-      return clearTimeout(duration);
+      clearTimeout(duration);
           }}
-      setTimeout(duration,100);
-      
+          setTimeout(duration,100);
+    },[phase])
+    useEffect(() => {
+      if (phase === 2) {
+        const wpm=Math.round(((60 / maxt) * correctChar) / 5);
+        const accu=(((correctChar - errorChar) / (currIndex + 1)) * 100).toFixed(2)
+        const raw=Math.round(((60 / maxt) * (correctChar+errorChar)) / 5);
+        setRaw(raw);
+        setAccu(accu);
+        setWPM(wpm);
+      }
+    }, [phase, correctChar,errorChar]);
   return (
     <Provider store={store}>
     <ProtectedRoute>
@@ -113,7 +126,7 @@ Rating
   
 </div>
 </div>
-{(t-maxt*1000<0)&&!t?<div>
+{!(phase==2)?<div>
 <div className='text-[2rem] w-max-[100%] text-white font-ocra mt-[10rem]'
     >
       {chars.split("").map((char, index) => {
@@ -131,6 +144,7 @@ Rating
         );
       })}
 </div>
+{phase==0?
 <div className='flex gap-5 items-center w-max-[100%] mt-10 justify-center'>
   <div className='flex justify-center items-center gap-5 w-[6.5rem] text-[1.25rem] text-[#4d4d4d] box-border px-[1.25rem] h-[3.5rem] rounded-[1875rem] bg-black border-2 border-[#333]'>
 <span className='hover:text-white'>@</span>
@@ -156,9 +170,11 @@ Rating
 <div onClick={()=>setMaxt(120)} className={maxt===120?'bg-[#1a1a1a] rounded-full min-w-[2.5rem] h-[2.5rem] flex justify-center items-center text-white':''}><span className='hover:text-white cursor-pointer'>120</span></div>
 
   </div>
-</div>
+</div>:<div className='text-white text-[1.25rem] flex justify-center items-center text-center'>
+  Time Left:{(maxt-t/1000).toFixed(0)}
+  </div>}
 </div>:
-<Results/>}
+<Results total={currIndex+1} miss={currIndex+1-correctChar-errorChar} secs={maxt} raw={raw} accu={accu} wpm={WPM} wrong={errorChar} correct={correctChar}/>}
 
 <div className='flex absolute justify-center items-center w-[100%] box-border bottom-[-25%] gap-4 '>
   <div className='text-[#666666] flex items-center gap-2'>

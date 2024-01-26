@@ -1,22 +1,22 @@
 import React from 'react'
 import Score from './score'
-function Results() {
+function Results(props) {
   return (
-    <div>
+    <div className='mt-[10rem]'>
         <div className='flex flex-col justify-center items-center gap-[5rem]'>
 <div className='flex gap-[4rem]'>
-<Score score={48} name={'WPM'} />
-<Score score={48} name={'WPM'} />
-<Score score={48} name={'WPM'} />
-<Score score={48} name={'WPM'} />
+<Score score={props.wpm} name={'WPM'} />
+<Score score={props.accu} name={'Accuracy'} />
+<Score score={props.secs} name={'Seconds'} />
+<Score score={props.raw} name={'Raw'} />
 </div>
 <div className='flex flex-col gap-6'>
     <div className='font-Poppins text-[#666] text-[1.875rem] leading-[100%]'>Characters</div>
 <div className='flex gap-[4rem]'>
-<Score score={48} name={'WPM'} />
-<Score score={48} name={'WPM'} />
-<Score score={48} name={'WPM'} />
-<Score score={48} name={'WPM'} />
+<Score score={props.total} name={'Total'} />
+<Score score={props.correct} name={'Correct'} />
+<Score score={props.wrong} name={'Incorrect'} />
+<Score score={props.miss} name={'Missed'} />
 </div>
 </div>
         </div>

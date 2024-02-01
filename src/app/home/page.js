@@ -2,6 +2,7 @@
 import React from 'react'
 import { logout } from '@/components/AuthService';
 import { useState } from 'react';
+import { selectTokens} from '@/store/AuthSlice';
 import { Typewriter } from 'react-simple-typewriter'
 import Fa from '../../../public/fa.svg'
 import Fahid from '../../../public/fahid.svg'
@@ -23,8 +24,11 @@ import useTypingGame, { CharStateType } from "react-typing-game-hook";
 import { useEffect } from 'react';
 import Score from '@/components/score';
 import Results from '@/components/results';
+import { useSelector } from 'react-redux';
+import cookie from 'js-cookie'
 function Home() {
   const router =useRouter();
+  const auth=cookie.get("auth");
 const [maxt,setMaxt]=useState(15);
 const [WPM,setWPM]=useState(0);
 const [accu,setAccu]=useState(0);
@@ -86,7 +90,6 @@ const [t,setT]=useState(0)
     }, [phase, correctChar,errorChar]);
   return (
     <Provider store={store}>
-    <ProtectedRoute>
       <div className='bg-dkr font-Poppins min-h-[100vh] min-w-[100vw] px-[10vw] md:px-[7.4rem] py-[2rem]'>
     <div className='relative'>
         <div className='flex flex-row justify-start items-center gap-[7rem]'><div className='flex flex-row gap-2 justify-center items-center mob:text-[1.375rem] text-[1rem] text-[#e6e6e6]'><svg className='hidden mob:flex' width="33" height="31" viewBox="0 0 33 31" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -120,10 +123,14 @@ Rating
 
 
 </div>
-<div className='flex gap-2 text-4'>
+<div className='text-4'>
+  {auth?
   <button onClick={logout1} className='w-[6.8rem] h-[2.5rem] flex items-center justify-center font-semibold rounded-[1.5rem] bg-white'>logout</button>
-  {/* <button className='w-[6.8rem] h-[2.5rem] flex items-center justify-center font-semibold rounded-[1.5rem] bg-transparent text-white'>Log in</button> */}
-  
+  /* <button className='w-[6.8rem] h-[2.5rem] flex items-center justify-center font-semibold rounded-[1.5rem] bg-transparent text-white'>Log in</button> */
+  : <div className='flex gap-2 '> <button onClick={()=>router.push('/signup')} className='w-[6.8rem] h-[2.5rem] flex items-center justify-center font-semibold rounded-[1.5rem] bg-white'>Sign up</button>
+  <button className='w-[6.8rem] h-[2.5rem] flex items-center justify-center font-semibold rounded-[1.5rem] bg-transparent text-white'>Log in</button>
+  </div>
+}
 </div>
 </div>
 {!(phase==2)?<div>
@@ -170,7 +177,7 @@ Rating
 <div onClick={()=>setMaxt(120)} className={maxt===120?'bg-[#1a1a1a] rounded-full min-w-[2.5rem] h-[2.5rem] flex justify-center items-center text-white':''}><span className='hover:text-white cursor-pointer'>120</span></div>
 
   </div>
-</div>:<div className='text-white text-[1.25rem] flex justify-center items-center text-center'>
+</div>:<div className='mt-[4rem] text-white text-[1.25rem] flex justify-center items-center text-center'>
   Time Left:{(maxt-t/1000).toFixed(0)}
   </div>}
 </div>:
@@ -230,7 +237,6 @@ Rating
 </div>
 </div>
 </div>
-</ProtectedRoute>
 </Provider>
   )
 }

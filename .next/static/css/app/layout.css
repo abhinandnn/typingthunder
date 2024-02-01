@@ -431,20 +431,17 @@ video {
 .pointer-events-none{
   pointer-events: none;
 }
-.fixed{
-  position: fixed;
-}
 .absolute{
   position: absolute;
 }
 .relative{
   position: relative;
 }
-.bottom-10{
-  bottom: 2.5rem;
-}
 .bottom-\[-12\%\]{
   bottom: -12%;
+}
+.bottom-\[-25\%\]{
+  bottom: -25%;
 }
 .bottom-\[-35\%\]{
   bottom: -35%;
@@ -478,48 +475,6 @@ video {
 }
 .top-\[31\.2\%\]{
   top: 31.2%;
-}
-.bottom-0{
-  bottom: 0px;
-}
-.bottom-\[\]{
-  bottom: ;
-}
-.bottom-\[-\]{
-  bottom: -;
-}
-.bottom-\[-20rem\]{
-  bottom: -20rem;
-}
-.bottom-\[-10rem\]{
-  bottom: -10rem;
-}
-.bottom-\[-15rem\]{
-  bottom: -15rem;
-}
-.bottom-\[-rem\]{
-  bottom: -rem;
-}
-.bottom-\[-50\%\]{
-  bottom: -50%;
-}
-.bottom-\[-\%\]{
-  bottom: -%;
-}
-.bottom-\[-30\%\]{
-  bottom: -30%;
-}
-.bottom-\[-15\%\]{
-  bottom: -15%;
-}
-.bottom-\[-5\%\]{
-  bottom: -5%;
-}
-.bottom-\[-25\%\]{
-  bottom: -25%;
-}
-.m-8{
-  margin: 2rem;
 }
 .mb-5{
   margin-bottom: 1.25rem;
@@ -556,6 +511,9 @@ video {
 }
 .mt-\[10rem\]{
   margin-top: 10rem;
+}
+.mt-\[4rem\]{
+  margin-top: 4rem;
 }
 .box-border{
   box-sizing: border-box;

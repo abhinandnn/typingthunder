@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import { setTokens, clearTokens } from '../../store/AuthSlice.js'
+import { setTokens, clearTokens, setAuth } from '../../store/AuthSlice.js'
 import { useState } from 'react';
 import { Typewriter } from 'react-simple-typewriter'
 import Fa from '../../../public/fa.svg'
@@ -26,8 +26,8 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error,setError]=useState(false);
   const [errorPassword, setErrorPassword]= useState(false);
- const [loading, setLoading]=useState(false);
- const [isCheck,setCheck]=useState(true);
+  const [loading, setLoading]=useState(false);
+  const [isCheck,setCheck]=useState(true);
 
   const passwordShow = () => {
     setShowPassword(!showPassword);}
@@ -75,6 +75,7 @@ if(isValidEmail&&!error&&!errorPassword)
         setTokens({ accesstoken, refreshtoken });
     cookie.set("accesstoken", accesstoken);
     cookie.set("refreshtoken", refreshtoken);
+    cookie.set("auth", true)
         Router.push('/home');
         console.log(response);
 

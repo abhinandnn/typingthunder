@@ -1,4 +1,4 @@
-import { setTokens, clearTokens } from '../store/AuthSlice.js'
+import { setTokens, clearTokens,setAuth } from '../store/AuthSlice.js'
 import axios from '@/api/axios.js';
 import cookie from 'js-cookie'
 export const refreshToken = async () => {
@@ -8,9 +8,12 @@ export const refreshToken = async () => {
           const newAccessToken = response.data.data.accesstoken;
       console.log('hiii',newAccessToken)
       setTokens({ accesstoken: newAccessToken, refreshtoken });
+      cookie.set("auth", true)
       cookie.set('accesstoken', newAccessToken);
+
     } catch (error) {
       clearTokens();
+      cookie.set("auth", false);
       cookie.remove('accesstoken');
       cookie.remove('refreshtoken');
     }
@@ -18,6 +21,7 @@ export const refreshToken = async () => {
   
   export const logout = () => {
     clearTokens();
+    cookie.set("auth", false);
     cookie.remove('accesstoken');
     cookie.remove('refreshtoken');
   };

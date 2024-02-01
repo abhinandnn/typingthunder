@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 function page() {
 
-  return redirect('/login');
+  return redirect('/home');
 }
 
 export default page

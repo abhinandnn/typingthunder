@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { refreshToken } from './AuthService';
-import { selectTokens } from '@/store/AuthSlice';
+import { selectTokens, setAuth } from '@/store/AuthSlice';
 import axios from '@/api/axios';
 import cookie from 'js-cookie'
 
@@ -21,6 +21,8 @@ const ProtectedRoute = ({ children }) => {
           try {
             const response = await axios.post('api/auth/check-token',{},{headers:{'auth-token': `${token}`},withCredentials: false});
             console.log(response);
+            setAuth(true);
+      cookie.set("auth", true);
         } catch (error) {
             await refreshToken();
           }

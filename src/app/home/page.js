@@ -2,16 +2,7 @@
 import React from 'react'
 import { logout } from '@/components/AuthService';
 import { useState } from 'react';
-import { selectTokens} from '@/store/AuthSlice';
-import { Typewriter } from 'react-simple-typewriter'
-import Fa from '../../../public/fa.svg'
-import Fahid from '../../../public/fahid.svg'
-import Bigbutton from '@/components/bigbutton';
-import Googlebutton from '@/components/googlebutton';
 import Image from 'next/image';
-import Link from 'next/link';
-import checkbox from '../../../public/checkbox.svg'
-import checkbox1 from '../../../public/checkbox1.svg'
 import smlogo from '../../../public/smlogo.svg'
 import axios from '@/api/axios';
 import toast from 'react-hot-toast';
@@ -22,7 +13,6 @@ import store from '@/store/store';
 import { useRouter } from 'next/navigation';
 import useTypingGame, { CharStateType } from "react-typing-game-hook";
 import { useEffect } from 'react';
-import Score from '@/components/score';
 import Results from '@/components/results';
 import { useSelector } from 'react-redux';
 import cookie from 'js-cookie'
@@ -33,21 +23,38 @@ const [maxt,setMaxt]=useState(15);
 const [WPM,setWPM]=useState(0);
 const [accu,setAccu]=useState(0);
 const [raw,setRaw]=useState(0);
-const [t,setT]=useState(0)
+const [t,setT]=useState(0);
+const [num,setNum] =useState(false);
+const [punc,setPunc] =useState(false);
  const logout1 = () =>{
   logout();
   router.push('/login')
  }
+ const [apiResponse, setApiResponse] = useState('');
+ const fetchData = async () => {
+  try {
+    const response = await axios.get(`api/user/${punc?'get-random-text-with-punctuations':'get-random-text'}`);
+    const text=response.data.text;
+    setApiResponse(text.slice(0,50).join(' ').replace(/\s*([.,!?;:])/g, '$1'))
+    console.log(text.slice(0,50).join(' '));
+   } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
+ useEffect(() => {
+   fetchData();
+ }, [punc]);
  let newt=0;
     const {
       states: { chars, charsState, phase, correctChar,errorChar,currIndex },
       actions: { insertTyping, resetTyping, deleteTyping, getDuration, endTyping,}
-    } = useTypingGame("Most of them are based on basic text fields that were modified to better handle specific types of information, like the credit card numbers. Here are just a few examples of input types that are most commonly used throughout UIs we creating.");
+    } = useTypingGame(apiResponse);
     useEffect(() => {
       const handleKeyDown = (e) => {
         e.preventDefault();
         const key = e.key;
         if (key === 'R' && e.shiftKey) {
+        fetchData();
          resetTyping();
          return;
         }
@@ -154,8 +161,8 @@ Rating
 {phase==0?
 <div className='flex gap-5 items-center w-max-[100%] mt-10 justify-center'>
   <div className='flex justify-center items-center gap-5 w-[6.5rem] text-[1.25rem] text-[#4d4d4d] box-border px-[1.25rem] h-[3.5rem] rounded-[1875rem] bg-black border-2 border-[#333]'>
-<span className='hover:text-white'>@</span>
-<span className='hover:text-white'>#</span>
+  <div onClick={()=>setPunc(!punc)} className={punc===true?'bg-[#1a1a1a] rounded-full min-w-[2rem] h-[2rem] flex justify-center items-center text-white':''}><span className='hover:text-white'>@</span></div>
+  <div onClick={()=>setNum(!num)} className={num===true?'bg-[#1a1a1a] rounded-full min-w-[2rem] h-[2rem] flex justify-center items-center text-white':''}><span className='hover:text-white'>#</span></div>
   </div>
 
   <div className='flex justify-center items-center gap-[3.9rem] w-[14.5rem] text-[1.25rem] text-[#4d4d4d] box-border px-[1.12rem] h-[3.5rem] rounded-[1875rem] bg-black border-2 border-[#333]'>

@@ -542,6 +542,9 @@ video {
 .h-\[4rem\]{
   height: 4rem;
 }
+.h-\[2rem\]{
+  height: 2rem;
+}
 .min-h-\[100vh\]{
   min-height: 100vh;
 }
@@ -583,6 +586,9 @@ video {
 }
 .min-w-\[80vw\]{
   min-width: 80vw;
+}
+.min-w-\[2rem\]{
+  min-width: 2rem;
 }
 @keyframes spin{
   to{

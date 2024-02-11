@@ -1,9 +1,11 @@
 import React from 'react'
 import Score from './score'
+import Retry from '../../public/retry.svg'
+import Image from 'next/image'
 function Results(props) {
   return (
-    <div className='mt-[10rem]'>
-        <div className='flex flex-col justify-center items-center gap-[5rem]'>
+    <div className='mt-[10rem] flex flex-col items-center justify-center gap-[4rem]'>
+        <div className='flex flex-col justify-center items-start gap-[5rem]'>
 <div className='flex gap-[4rem]'>
 <Score score={props.wpm} name={'WPM'} />
 <Score score={props.accu} name={'Accuracy'} />
@@ -19,6 +21,9 @@ function Results(props) {
 <Score score={props.miss} name={'Missed'} />
 </div>
 </div>
+        </div>
+        <div>
+          <Image onClick={props.reset} className='cursor-pointer' src={Retry}/>
         </div>
     </div>
   )

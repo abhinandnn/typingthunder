@@ -26,6 +26,9 @@ const [raw,setRaw]=useState(0);
 const [t,setT]=useState(0);
 const [num,setNum] =useState(false);
 const [punc,setPunc] =useState(false);
+const [mode, setMode]=useState(0);
+const [type,setType]=useState(0);
+
  const logout1 = () =>{
   logout();
   router.push('/login')
@@ -41,6 +44,7 @@ const [punc,setPunc] =useState(false);
     console.error('Error fetching data:', error);
   }
 };
+
  useEffect(() => {
    fetchData();
  }, [punc]);
@@ -88,27 +92,27 @@ const [punc,setPunc] =useState(false);
     useEffect(() => {
       if (phase === 2) {
         const wpm=Math.round(((60 / maxt) * correctChar) / 5);
-        const accu=(((correctChar - errorChar) / (currIndex + 1)) * 100).toFixed(2)
+        const acu=((((correctChar-errorChar)) / (currIndex + 1)) * 100).toFixed(2)
+        setAccu(acu);
+        if(acu<0)
+        setAccu(0);
         const raw=Math.round(((60 / maxt) * (correctChar+errorChar)) / 5);
         setRaw(raw);
-        setAccu(accu);
         setWPM(wpm);
       }
     }, [phase, correctChar,errorChar]);
   return (
     <Provider store={store}>
-      <div className='bg-dkr font-Poppins min-h-[100vh] min-w-[100vw] px-[10vw] md:px-[7.4rem] py-[2rem]'>
+      <div className='relative bg-dkr font-Poppins min-h-[100vh] max-h-[100vh] min-w-[100vw] px-[10vw] py-8 overflow-hidden'>
     <div className='relative'>
-        <div className='flex flex-row justify-start items-center gap-[7rem]'><div className='flex flex-row gap-2 justify-center items-center mob:text-[1.375rem] text-[1rem] text-[#e6e6e6]'><svg className='hidden mob:flex' width="33" height="31" viewBox="0 0 33 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div className={`flex flex-row ${!(phase===1||phase===2)?'justify-center':'justify-start'} items-center gap-[6rem] md:gap-[3.6rem]  xl:gap-[8rem]`}><div className='flex flex-row gap-2 justify-center items-center mob:text-[1.375rem] text-[1rem] text-[#e6e6e6]'><svg className='hidden mob:flex' width="33" height="31" viewBox="0 0 33 31" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M19.5869 6.12437H29.156C29.508 6.12437 29.8272 5.93937 30.0077 5.63725L32.4717 1.51288C32.87 0.846325 32.3897 0 31.6133 0H3.10206C2.70651 0 2.34813 0.23315 2.18784 0.594763L0.35966 4.71913C0.0665792 5.38032 0.550228 6.12437 1.27346 6.12437H11.309L6.18637 16.5652C5.86037 17.2296 6.34403 18.0056 7.08413 18.0056H9.68913C10.3854 18.0056 10.8686 18.6995 10.627 19.3526L7.62394 27.4705C7.2338 28.5251 8.61216 29.3214 9.33089 28.4566L21.7676 13.4923C22.2866 12.8679 21.8844 11.918 21.0749 11.8561L18.1564 11.6327C17.4301 11.5771 17.005 10.7885 17.3578 10.1513L19.5869 6.12437Z" fill="#E6E6E6"/>
 </svg>
 <Image className='mob:hidden' src={smlogo}/>
 <>TypingThunder</>
 </div>
-<div className='flex gap-10 text-[1rem] text-[#666666]'>
-
-
-  <div className='hover:text-white cursor-pointer'>
+{phase==0&&<div className='flex gap-10 text-[1rem] text-[#666666]'>
+  <div className={`hover:text-white cursor-pointer ${type==0?'text-white':''}`}>
 Speed Test
   </div>
   <div className='hover:text-white cursor-pointer'>
@@ -126,22 +130,20 @@ Practice
 
 Rating
 </div>
-
-
-
-</div>
-<div className='text-4'>
+</div>}
+{phase==0&&<div className='text-4'>
   {auth?
   <button onClick={logout1} className='w-[6.8rem] h-[2.5rem] flex items-center justify-center font-semibold rounded-[1.5rem] bg-white'>logout</button>
   /* <button className='w-[6.8rem] h-[2.5rem] flex items-center justify-center font-semibold rounded-[1.5rem] bg-transparent text-white'>Log in</button> */
-  : <div className='flex gap-2 '> <button onClick={()=>router.push('/signup')} className='w-[6.8rem] h-[2.5rem] flex items-center justify-center font-semibold rounded-[1.5rem] bg-white'>Sign up</button>
-  <button className='w-[6.8rem] h-[2.5rem] flex items-center justify-center font-semibold rounded-[1.5rem] bg-transparent text-white'>Log in</button>
+  : <div className='flex gap-6 '> <button onClick={()=>router.push('/signup')} className='w-[6.8rem] h-[2.5rem] flex items-center justify-center font-semibold rounded-[1.5rem] bg-white'>Sign up</button>
+  <button className='w-[3.8rem] h-[2.5rem] flex items-center justify-center font-semibold rounded-[1.5rem] bg-transparent text-white'>Log in</button>
   </div>
 }
+</div>}
 </div>
-</div>
-{!(phase==2)?<div>
-<div className='text-[2rem] w-max-[100%] text-white font-ocra mt-[10rem]'
+{!(phase==2)?<div className='flex flex-col items-center pb-[6.8rem] justify-center h-[100vh]'>
+  <div >
+<div className='text-[2rem] w-max-[100%] text-white font-ocra'
     >
       {chars.split("").map((char, index) => {
         let state = charsState[index];
@@ -158,23 +160,24 @@ Rating
         );
       })}
 </div>
+</div>
 {phase==0?
 <div className='flex gap-5 items-center w-max-[100%] mt-10 justify-center'>
   <div className='flex justify-center items-center gap-5 w-[6.5rem] text-[1.25rem] text-[#4d4d4d] box-border px-[1.25rem] h-[3.5rem] rounded-[1875rem] bg-black border-2 border-[#333]'>
-  <div onClick={()=>setPunc(!punc)} className={punc===true?'bg-[#1a1a1a] rounded-full min-w-[2rem] h-[2rem] flex justify-center items-center text-white':''}><span className='hover:text-white'>@</span></div>
-  <div onClick={()=>setNum(!num)} className={num===true?'bg-[#1a1a1a] rounded-full min-w-[2rem] h-[2rem] flex justify-center items-center text-white':''}><span className='hover:text-white'>#</span></div>
+  <div onClick={()=>setPunc(!punc)} className={punc===true?'bg-[#1a1a1a] rounded-full min-w-[2rem] h-[2rem] flex justify-center items-center text-white':''}><span className='hover:text-white cursor-pointer'>@</span></div>
+  <div onClick={()=>setNum(!num)} className={num===true?'bg-[#1a1a1a] rounded-full min-w-[2rem] h-[2rem] flex justify-center items-center text-white':''}><span className='hover:text-white cursor-pointer'>#</span></div>
   </div>
 
   <div className='flex justify-center items-center gap-[3.9rem] w-[14.5rem] text-[1.25rem] text-[#4d4d4d] box-border px-[1.12rem] h-[3.5rem] rounded-[1875rem] bg-black border-2 border-[#333]'>
-<div className='group'><svg className='stroke-[#4d4d4d] hover:stroke-white' width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <div onClick={()=>setMode(0)} className={mode==0?'bg-[#1a1a1a] rounded-full min-w-[2rem] h-[2rem] flex justify-center items-center text-white group cursor-pointer':''}><svg className={`${mode==0?'stroke-white':'stroke-[#4d4d4d]'} hover:stroke-white`} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M12 7V12H17M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 </div>
-<div className='group'><svg className='stroke-[#4d4d4d] hover:stroke-white' width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<div className='group'><svg className='cursor-pointer stroke-[#4d4d4d] hover:stroke-white' width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M14 12V15.4C14 15.9601 14 16.2399 14.109 16.4538C14.2049 16.642 14.3577 16.7952 14.5459 16.8911C14.7596 17 15.0395 17 15.5985 17H17.4015C17.9605 17 18.24 17 18.4537 16.8911C18.6419 16.7952 18.7952 16.6419 18.8911 16.4537C19 16.24 19 15.9605 19 15.4015V13.5985C19 13.0395 19 12.7596 18.8911 12.5459C18.7952 12.3577 18.642 12.2049 18.4538 12.109C18.2399 12 17.9601 12 17.4 12H14ZM14 12V10C14 8.34315 15.3431 7 17 7M5 12V15.4C5 15.9601 5 16.2399 5.10899 16.4538C5.20487 16.642 5.35774 16.7952 5.5459 16.8911C5.7596 17 6.0395 17 6.59845 17H8.40154C8.9605 17 9.23999 17 9.4537 16.8911C9.64186 16.7952 9.79524 16.6419 9.89111 16.4537C10 16.24 10 15.9605 10 15.4015V13.5985C10 13.0395 10 12.7596 9.89111 12.5459C9.79524 12.3577 9.64196 12.2049 9.45379 12.109C9.23988 12 8.96005 12 8.4 12H5ZM5 12V10C5 8.34315 6.34315 7 8 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 </div>
-<span className='hover:text-white'>T</span>
+<span className='cursor-pointer hover:text-white'>T</span>
   </div>
 
   <div className='flex justify-center items-center gap-[2.3rem] w-[16.75rem] text-[1.25rem] text-[#4d4d4d] box-border px-[1.25rem] h-[3.5rem] rounded-[1875rem] bg-black border-2 border-[#333]'>
@@ -188,9 +191,14 @@ Rating
   Time Left:{(maxt-t/1000).toFixed(0)}
   </div>}
 </div>:
-<Results total={currIndex+1} miss={currIndex+1-correctChar-errorChar} secs={maxt} raw={raw} accu={accu} wpm={WPM} wrong={errorChar} correct={correctChar}/>}
+<Results total={currIndex+1} miss={currIndex+1-correctChar-errorChar} secs={maxt} raw={raw} accu={accu} wpm={WPM} wrong={errorChar} correct={correctChar} reset={()=>{
+  fetchData();
+  resetTyping();
+}}/>}
 
-<div className='flex absolute justify-center items-center w-[100%] box-border bottom-[-25%] gap-4 '>
+</div>
+<div>
+<div className={`flex absolute justify-center items-center w-[80vw] box-border ${phase==2?'bottom-[5%]':'bottom-[5%]'} gap-4`}>
   <div className='text-[#666666] flex items-center gap-2'>
   <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M3 4.5L7.58073 7.9592L7.58225 7.96047C8.09089 8.33346 8.34535 8.52007 8.62407 8.59216C8.87042 8.65588 9.12938 8.65588 9.37573 8.59216C9.6547 8.52001 9.9099 8.33285 10.4194 7.9592C10.4194 7.9592 13.3576 5.70445 15 4.5M2.25 11.8501V6.15015C2.25 5.31007 2.25 4.88972 2.41349 4.56885C2.5573 4.2866 2.7866 4.0573 3.06885 3.91349C3.38972 3.75 3.81007 3.75 4.65015 3.75H13.3501C14.1902 3.75 14.6097 3.75 14.9305 3.91349C15.2128 4.0573 15.4429 4.2866 15.5867 4.56885C15.75 4.8894 15.75 5.30925 15.75 6.14768V11.8527C15.75 12.6911 15.75 13.1104 15.5867 13.4309C15.4429 13.7132 15.2128 13.9429 14.9305 14.0867C14.61 14.25 14.1908 14.25 13.3523 14.25H4.64768C3.80925 14.25 3.3894 14.25 3.06885 14.0867C2.7866 13.9429 2.5573 13.7132 2.41349 13.4309C2.25 13.11 2.25 12.6902 2.25 11.8501Z" stroke="#666666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -241,7 +249,7 @@ Rating
 </svg>
 <span>Support</span>
   </div>
-</div>
+  </div>
 </div>
 </div>
 </Provider>

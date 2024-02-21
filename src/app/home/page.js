@@ -154,8 +154,9 @@ Rating
             ? "#FFF"
             : "#FF7E7E";
         return (
-          <span key={char + index} style={{ color }}>
+          <span className='relative' key={char + index} style={{ color }}>
             {char}
+            <span className={currIndex==index?'animate-pulse absolute text-[3rem] top-[-1.2rem] z-10 right-[-1rem]':'hidden'}>|</span>
           </span>
         );
       })}

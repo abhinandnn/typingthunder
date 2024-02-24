@@ -467,29 +467,41 @@ video {
 .right-4{
   right: 1rem;
 }
+.right-\[-1rem\]{
+  right: -1rem;
+}
 .top-2{
   top: 0.5rem;
 }
 .top-6{
   top: 1.5rem;
 }
+.top-\[-1\.2rem\]{
+  top: -1.2rem;
+}
 .top-\[31\.2\%\]{
   top: 31.2%;
 }
-.right-0{
-  right: 0px;
+.bottom-\[\%\]{
+  bottom: %;
 }
-.right-\[-1rem\]{
-  right: -1rem;
+.bottom-\[3243\%\]{
+  bottom: 3243%;
 }
-.top-0{
-  top: 0px;
+.top-\[5\%\]{
+  top: 5%;
 }
-.top-\[-1rem\]{
-  top: -1rem;
+.bottom-\[15\%\]{
+  bottom: 15%;
 }
-.top-\[-1\.2rem\]{
-  top: -1.2rem;
+.bottom-\[10\%\]{
+  bottom: 10%;
+}
+.bottom-\[12\%\]{
+  bottom: 12%;
+}
+.bottom-\[8\%\]{
+  bottom: 8%;
 }
 .z-10{
   z-index: 10;
@@ -566,6 +578,18 @@ video {
 .h-\[4rem\]{
   height: 4rem;
 }
+.h-full{
+  height: 100%;
+}
+.h-\[90vh\]{
+  height: 90vh;
+}
+.h-\[0vh\]{
+  height: 0vh;
+}
+.h-\[95vh\]{
+  height: 95vh;
+}
 .max-h-\[100vh\]{
   max-height: 100vh;
 }
@@ -614,14 +638,6 @@ video {
 .min-w-\[80vw\]{
   min-width: 80vw;
 }
-@keyframes spin{
-  to{
-    transform: rotate(360deg);
-  }
-}
-.animate-spin{
-  animation: spin 1s linear infinite;
-}
 @keyframes pulse{
   50%{
     opacity: .5;
@@ -629,6 +645,14 @@ video {
 }
 .animate-pulse{
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+@keyframes spin{
+  to{
+    transform: rotate(360deg);
+  }
+}
+.animate-spin{
+  animation: spin 1s linear infinite;
 }
 .cursor-pointer{
   cursor: pointer;
@@ -959,15 +983,29 @@ video {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
-.text-\[\]{
-  color: ;
-}
 .underline{
   text-decoration-line: underline;
 }
 .outline-none{
   outline: 2px solid transparent;
   outline-offset: 2px;
+}
+.transition-all{
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.duration-700{
+  transition-duration: 700ms;
+}
+.ease-in{
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+}
+.ease-in-out{
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+.ease-linear{
+  transition-timing-function: linear;
 }
 
 @font-face {
@@ -1099,7 +1137,7 @@ video {
   \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /* cyrillic-ext */
 @font-face {
-  font-family: '__Inter_e66fe9';
+  font-family: '__Inter_aaf875';
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
@@ -1108,7 +1146,7 @@ video {
 }
 /* cyrillic */
 @font-face {
-  font-family: '__Inter_e66fe9';
+  font-family: '__Inter_aaf875';
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
@@ -1117,7 +1155,7 @@ video {
 }
 /* greek-ext */
 @font-face {
-  font-family: '__Inter_e66fe9';
+  font-family: '__Inter_aaf875';
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
@@ -1126,16 +1164,16 @@ video {
 }
 /* greek */
 @font-face {
-  font-family: '__Inter_e66fe9';
+  font-family: '__Inter_aaf875';
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
   src: url(/_next/static/media/51ed15f9841b9f9d-s.woff2) format('woff2');
-  unicode-range: U+0370-03FF;
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
 }
 /* vietnamese */
 @font-face {
-  font-family: '__Inter_e66fe9';
+  font-family: '__Inter_aaf875';
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
@@ -1144,22 +1182,22 @@ video {
 }
 /* latin-ext */
 @font-face {
-  font-family: '__Inter_e66fe9';
+  font-family: '__Inter_aaf875';
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
   src: url(/_next/static/media/d6b16ce4a6175f26-s.woff2) format('woff2');
-  unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* latin */
 @font-face {
-  font-family: '__Inter_e66fe9';
+  font-family: '__Inter_aaf875';
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
   src: url(/_next/static/media/c9a5bc6a7c948fb0-s.p.woff2) format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}@font-face {font-family: '__Inter_Fallback_e66fe9';src: local("Arial");ascent-override: 90.20%;descent-override: 22.48%;line-gap-override: 0.00%;size-adjust: 107.40%
-}.__className_e66fe9 {font-family: '__Inter_e66fe9', '__Inter_Fallback_e66fe9';font-style: normal
+}@font-face {font-family: '__Inter_Fallback_aaf875';src: local("Arial");ascent-override: 90.20%;descent-override: 22.48%;line-gap-override: 0.00%;size-adjust: 107.40%
+}.__className_aaf875 {font-family: '__Inter_aaf875', '__Inter_Fallback_aaf875';font-style: normal
 }
 

@@ -21,7 +21,7 @@ export const refreshToken = async () => {
   
   export const logout = () => {
     clearTokens();
-    cookie.set("auth", false);
+    cookie.remove("auth")
     cookie.remove('accesstoken');
     cookie.remove('refreshtoken');
   };

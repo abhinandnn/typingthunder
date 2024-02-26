@@ -26,7 +26,7 @@ const [t,setT]=useState(0);
 const [num,setNum] =useState(false);
 const [punc,setPunc] =useState(false);
 const [mode, setMode]=useState(0);
-
+const [backspace,setBackspace]=useState(false);
  const [apiResponse, setApiResponse] = useState('');
  const fetchData = async () => {
   try {
@@ -46,7 +46,7 @@ const [mode, setMode]=useState(0);
     const {
       states: { chars, charsState, phase, correctChar,errorChar,currIndex },
       actions: { insertTyping, resetTyping, deleteTyping, getDuration, endTyping,}
-    } = useTypingGame(apiResponse);
+    } = useTypingGame(apiResponse, { skipCurrentWordOnSpace: false, countErrors: 'once' });
     useEffect(() => {
         setPhase(phase);
     }, [phase])
@@ -60,10 +60,12 @@ const [mode, setMode]=useState(0);
          return;
         }
         if (key === 'Backspace') {
+        setBackspace(true);
           deleteTyping(false);
           return;
         }
         if (key.length === 1) {
+          setBackspace(false);
           insertTyping(key);
         }
       };
@@ -103,6 +105,7 @@ const [mode, setMode]=useState(0);
   <div>
   {!(phase==2)?<div className='flex flex-col items-center pb-[6.8rem] justify-center'>
   <div >
+    
 <div className='text-[2rem] w-max-[100%] text-white font-ocra'
     >
       {chars.split("").map((char, index) => {
@@ -116,8 +119,8 @@ const [mode, setMode]=useState(0);
         return (
           <span className='relative transition-all ease-in' key={char + index} style={{ color }}>
             {char}
-            <span className='transition-all ease-linear duration-700'><span className={currIndex==index?'transition-all ease-in-out animate-pulse absolute text-[3rem] top-[-1.2rem] z-10 right-[-1rem]':'hidden'}>|</span>
-          </span></span>
+            <span className={currIndex==index?`transition-transform ${backspace?'translate-x-[-1rem] right-[-2rem]':'translate-x-[1rem] right-[0rem]'} animate-pulse absolute text-[3rem] top-[-1.2rem] z-10 visible`:' invisible absolute'}>|</span>
+          </span>
         );
       })}
 </div>

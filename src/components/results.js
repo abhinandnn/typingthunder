@@ -4,7 +4,7 @@ import Retry from '../../public/retry.svg'
 import Image from 'next/image'
 function Results(props) {
   return (
-    <div className='mt-[10rem] flex flex-col items-center justify-center gap-[4rem]'>
+    <div className='mb-[5rem] flex flex-col items-center justify-center gap-[4rem]'>
         <div className='flex flex-col justify-center items-start gap-[5rem]'>
 <div className='flex gap-[4rem]'>
 <Score score={props.wpm} name={'WPM'} />

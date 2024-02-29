@@ -18,11 +18,12 @@ import { useSelector } from 'react-redux';
 import cookie from 'js-cookie'
 import SpeedTest from '@/components/speedTest';
 import Footer from '@/components/footer';
+import Sphere from '@/components/Sphere';
 function Home() {
   const router =useRouter();
   const auth=cookie.get("auth");
   const [phase,setPhase]=useState(0); 
-  const [type,setType]=useState(0);
+  const [type,setType]=useState(3);
 
  const logout1 = () =>{
   logout();
@@ -40,22 +41,19 @@ function Home() {
 <>TypingThunder</>
 </div>
 {phase==0&&<div className='flex gap-10 text-[1rem] text-[#666666]'>
-  <div className={`hover:text-white cursor-pointer ${type==0?'text-white':''}`}>
+  <div onClick={()=>setType(0)} className={`hover:text-white cursor-pointer ${type==0?'text-white':''}`}>
 Speed Test
   </div>
-  <div className='hover:text-white cursor-pointer'>
+  <div onClick={()=>setType(1)} className={`hover:text-white cursor-pointer ${type==1?'text-white':''}`}>
 Play 1v1
   </div>
-  <div className='hover:text-white cursor-pointer'>
-  
+  <div onClick={()=>setType(2)} className={`hover:text-white cursor-pointer ${type==2?'text-white':''}`}>
 Practice
 </div>
-<div className='hover:text-white cursor-pointer'>
-
+<div onClick={()=>setType(3)} className={`hover:text-white cursor-pointer ${type==3?'text-white':''}`}>
   Sphere
-</div>
-<div className='hover:text-white cursor-pointer'>
-
+</div> 
+ <div onClick={()=>setType(4)} className={`hover:text-white cursor-pointer ${type==4?'text-white':''}`}>
 Rating
 </div>
 </div>}
@@ -69,8 +67,9 @@ Rating
 }
 </div>}
 </div>
-<div className='flex flex-col h-[95vh] justify-center items-center'>
-<SpeedTest setPhase={setPhase}/>
+<div className={`flex flex-col h-[95vh] ${type==0&&'justify-center'} items-center`}>
+{type==0&&<SpeedTest setPhase={setPhase}/>}
+{type==3&&<Sphere/>}
 </div>
 <Footer/>
 </div>

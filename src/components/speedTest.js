@@ -1,4 +1,4 @@
-"use client"
+'use client'
 import React from 'react'
 import { logout } from '@/components/AuthService';
 import { useState } from 'react';
@@ -32,7 +32,7 @@ const [backspace,setBackspace]=useState(false);
   try {
     const response = await axios.get(`api/user/${punc?'get-random-text-with-punctuations':'get-random-text'}`);
     const text=response.data.text;
-    setApiResponse(text.slice(0,50).join(' ').replace(/\s*([.,!?;:])/g, '$1'))
+    setApiResponse(text.join(' ').replace(/\s*([.,!?;:])/g, '$1'))
     console.log(text.slice(0,50).join(' '));
    } catch (error) {
     console.error('Error fetching data:', error);

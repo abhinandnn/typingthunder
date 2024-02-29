@@ -45,7 +45,7 @@ const Room = () => {
   
   return (
     <div>
-      {/* <input
+      <input
         type="text"
         placeholder="Enter room code"
         value={roomCode}
@@ -55,8 +55,8 @@ const Room = () => {
 
       <button onClick={handleCreateRoom}>Create Room</button>
 
-      {createdRoomCode && <p>Room created with code: {createdRoomCode}</p>} */}
-      yo
+      {createdRoomCode && <p>Room created with code: {createdRoomCode}</p>}
+      
     </div>
   );
 }

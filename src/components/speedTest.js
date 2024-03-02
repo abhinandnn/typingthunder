@@ -15,7 +15,6 @@ import useTypingGame, { CharStateType } from "react-typing-game-hook";
 import { useEffect } from 'react';
 import Results from '@/components/results';
 import { useSelector } from 'react-redux';
-import cookie from 'js-cookie'
 function SpeedTest({setPhase}) {
   const router =useRouter();
 const [maxt,setMaxt]=useState(15);

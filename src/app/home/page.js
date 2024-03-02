@@ -21,9 +21,9 @@ import Footer from '@/components/footer';
 import Sphere from '@/components/Sphere';
 function Home() {
   const router =useRouter();
-  const auth=cookie.get("auth");
+  const accessToken=cookie.get("accesstoken");
   const [phase,setPhase]=useState(0); 
-  const [type,setType]=useState(3);
+  const [type,setType]=useState(0);
 
  const logout1 = () =>{
   logout();
@@ -58,7 +58,7 @@ Rating
 </div>
 </div>}
 {phase==0&&<div className='text-4'>
-  {auth?
+  {accessToken?
   <button onClick={logout1} className='w-[6.8rem] h-[2.5rem] flex items-center justify-center font-semibold rounded-[1.5rem] bg-white'>logout</button>
   /* <button className='w-[6.8rem] h-[2.5rem] flex items-center justify-center font-semibold rounded-[1.5rem] bg-transparent text-white'>Log in</button> */
   : <div className='flex gap-6 '> <button onClick={()=>router.push('/signup')} className='w-[6.8rem] h-[2.5rem] flex items-center justify-center font-semibold rounded-[1.5rem] bg-white'>Sign up</button>
@@ -69,7 +69,7 @@ Rating
 </div>
 <div className={`flex flex-col h-[95vh] ${type==0&&'justify-center'} items-center`}>
 {type==0&&<SpeedTest setPhase={setPhase}/>}
-{type==3&&<Sphere/>}
+{type==3&&<Sphere setType={setType}/>}
 </div>
 <Footer/>
 </div>

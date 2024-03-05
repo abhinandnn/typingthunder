@@ -12,6 +12,8 @@ import io from 'socket.io-client';
 import { useEffect } from 'react';
 import sendArrow from '../../public/sendArrow.svg'
 import {refreshToken} from '@/components/AuthService';
+import axios from '@/api/axios';
+import { useRef } from 'react';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -30,6 +32,8 @@ function Sphere({setType}) {
   const accessToken = cookie.get('accesstoken');
   const [users, setUsers] = useState([]);
 
+  const [f,setF]=useState(1);
+  const messagesEndRef = useRef(null);
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState('');
 
@@ -63,13 +67,17 @@ function Sphere({setType}) {
       toast.success('Room created successfully with code: '+roomCode);
     });
 
+    newSocket.on('users-list', (Users) => {
+     setUsers(Users);
+      console.log('users',Users);
+    });
+
     newSocket.on('sent-message', (username, message) => {
       setMessages(prevMessages => [...prevMessages, { username, message }]);
     });
 
     newSocket.on('user-connected', (username) => {
-      setUsers(prevUsers => [...prevUsers, username]);
-      toast.success(username+' has joined the room');
+      setMessages(prevMessages => [...prevMessages, { message: username + ' connected' }]);
     });
     newSocket.on('custom-error',(data) =>{
       console.error(data);
@@ -99,6 +107,33 @@ function Sphere({setType}) {
       }
     }
   }
+
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on("user-ready", (username, message) => {
+        // setUserReadyMessage(`${username} ${message}`);
+        toast.success(`${username} ${message}`);
+    });
+
+    return () => {
+        socket.off("user-ready");
+    };
+}, [socket]);
+
+useEffect(() => {
+  if (!socket) return;
+
+  socket.on("starting-game", (message) => {
+      // setGameStartMessage(message);
+      toast.success(message);
+  });
+
+  return () => {
+      socket.off("starting-game");
+  };
+}, [socket]);
+
   const handleCreateRoom = (e) => {
     e.preventDefault();
     console.log('Creating room');
@@ -108,19 +143,36 @@ function Sphere({setType}) {
       console.error('Error creating room:', error);
     }
   }
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
   const sendMessage = () => {
     socket.emit('chat-message', roomCode, messageInput);
     setMessageInput('');
   };
+
+  const handleReady = () => {
+    socket.emit("ready", roomCode);
+};
+
+const handleStartGame = () => {
+    socket.emit("start-game", roomCode);
+};
+
+
   return (
-    <>
+    <div className='relative'>
     {game==0&&<div className='flex flex-col gap-[4rem]'>
         <div className='flex gap-4 mt-[4rem]'>
-            <div onClick={handleCreateRoom} className='bg-[#333333] cursor-pointer gap-4 flex justify-center items-center w-[35.5rem] h-[17.2rem] rounded-[0.75rem]'>
+            <div onClick={handleCreateRoom} className='bg-[#333333] cursor-pointer gap-4 flex justify-center items-center w-[40vw] h-[17.2rem] rounded-[0.75rem]'>
 <Image src={roomCreate} alt='room' />
 <span className='text-white text-[2.5rem]'>Create Room</span>
             </div>
-            <div className='bg-[#333333] cursor-pointer gap-2 flex justify-center items-center w-[35.5rem] h-[17.2rem] rounded-[0.75rem]'>
+            <div className='bg-[#333333] cursor-pointer gap-2 flex justify-center items-center w-[40vw] h-[17.2rem] rounded-[0.75rem]'>
 <Image src={roomJoin} alt='room' />
 <span onClick={()=>openPopup()} className='text-white text-[2.5rem]'>Join Room</span>
             </div>
@@ -132,15 +184,28 @@ function Sphere({setType}) {
   }
   {game==1&&<div>
   {createdRoomCode && <p>Room code: {createdRoomCode}</p>}
-  <div className='h-[30rem] w-[24rem] bg-[#333] border-[0.5px] border-[#fff] border-opacity-30 rounded-[0.75rem] bg-opacity-30'>
+  <div>
+    <h2>Users in the room:</h2>
+    <ul>
+      {users.map((user, index) => (
+        <li key={index}>{user.username} {user.role}</li>
+      ))}
+    </ul>
+    </div>
+    <div className='flex'>
+      <div>
+  <div className='relative h-[30rem] w-[24rem] bg-[#333] border-[0.5px] border-[#fff] border-opacity-30 rounded-[0.75rem] bg-opacity-30'>
     <div className='pl-[0.75rem] text-[1.375rem] py-[1rem] border-b-[0.5px] border-[#B3B3B3] font-bold text-white'>Sphere Chat</div>
-      <div className='px-[0.75rem] py-[0.75rem] h-[22rem] border-b-[0.5px] border-[#B3B3B3] flex flex-col gap-[1rem]'>
+      <div className='px-[0.75rem] py-[0.75rem] overflow-auto h-[22rem] border-b-[0.5px] border-[#B3B3B3]'>
+        <div className='flex flex-col gap-[1rem]'>
         {messages.map((msg, index) => (
           <div className='flex flex-col' key={index}>
             <span className='text-[0.75rem] leading-none text-[#b3b3b3]'>{msg.username}</span>
             <span className='text-[0.875rem] max-w-fit break-words text-wrap text-white'>{msg.message}</span>
           </div>
         ))}
+       <div ref={messagesEndRef} />
+       </div>
       </div>
       <div className='flex justify-center h-[3.8rem] rounded-b-[0.75rem] gap-2 items-center'>
       <input
@@ -154,6 +219,10 @@ function Sphere({setType}) {
       </button>
       </div>
     </div>
+    <button onClick={handleReady}>Ready</button>
+            <button onClick={handleStartGame}>Start Game</button>
+  </div>
+  </div>
   </div>}
     <Modal
     open={showPopup}
@@ -174,7 +243,7 @@ function Sphere({setType}) {
     </div>
 </div>
   </Modal>
-    </>
+    </div>
   )
 }
 

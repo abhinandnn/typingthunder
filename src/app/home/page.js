@@ -32,7 +32,7 @@ function Home() {
 
   return (
     <Provider store={store}>
-      <div className='relative bg-dkr font-Poppins min-h-[100vh] max-h-[100vh] min-w-[100vw] px-[10vw] py-8 overflow-hidden'>
+      <div className='relative bg-dkr font-Poppins min-h-[100vh] min-w-[100vw] flex flex-col px-[10vw] py-8'>
     <div className='relative'>
         <div className={`flex flex-row ${!(phase===1||phase===2)?'justify-center':'justify-start'} items-center gap-[6rem] md:gap-[3.6rem]  xl:gap-[8rem]`}><div className='flex cursor-pointer flex-row gap-2 justify-center items-center mob:text-[1.375rem] text-[1rem] text-[#e6e6e6]'><svg className='hidden mob:flex' width="33" height="31" viewBox="0 0 33 31" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M19.5869 6.12437H29.156C29.508 6.12437 29.8272 5.93937 30.0077 5.63725L32.4717 1.51288C32.87 0.846325 32.3897 0 31.6133 0H3.10206C2.70651 0 2.34813 0.23315 2.18784 0.594763L0.35966 4.71913C0.0665792 5.38032 0.550228 6.12437 1.27346 6.12437H11.309L6.18637 16.5652C5.86037 17.2296 6.34403 18.0056 7.08413 18.0056H9.68913C10.3854 18.0056 10.8686 18.6995 10.627 19.3526L7.62394 27.4705C7.2338 28.5251 8.61216 29.3214 9.33089 28.4566L21.7676 13.4923C22.2866 12.8679 21.8844 11.918 21.0749 11.8561L18.1564 11.6327C17.4301 11.5771 17.005 10.7885 17.3578 10.1513L19.5869 6.12437Z" fill="#E6E6E6"/>
@@ -67,7 +67,7 @@ Rating
 }
 </div>}
 </div>
-<div className={`flex flex-col h-[95vh] ${type==0&&'justify-center'} items-center`}>
+<div className={`flex flex-col ${type==0&&'justify-center'} min-h-[40rem] items-center`}>
 {type==0&&<SpeedTest setPhase={setPhase}/>}
 {type==3&&<Sphere setType={setType}/>}
 </div>

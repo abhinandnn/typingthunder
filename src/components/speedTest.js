@@ -15,18 +15,26 @@ import useTypingGame, { CharStateType } from "react-typing-game-hook";
 import { useEffect } from 'react';
 import Results from '@/components/results';
 import { useSelector } from 'react-redux';
+import {useRef} from 'react';
+import { useMemo } from 'react';
 function SpeedTest({setPhase}) {
   const router =useRouter();
+  const letterElements = useRef(null);
 const [maxt,setMaxt]=useState(15);
 const [WPM,setWPM]=useState(0);
 const [accu,setAccu]=useState(0);
 const [raw,setRaw]=useState(0);
-const [t,setT]=useState(0);
-const [num,setNum] =useState(false);
-const [punc,setPunc] =useState(false);
+const [timeLeft, setTimeLeft] = useState(()=>maxt);
+const [punc,setPunc] =useState(0);
 const [mode, setMode]=useState(0);
 const [backspace,setBackspace]=useState(false);
  const [apiResponse, setApiResponse] = useState('');
+ const [margin, setMargin] = useState(() => 0); 
+
+useEffect(() => {
+  setTimeLeft(maxt);
+}, [maxt,apiResponse]);
+
  const fetchData = async () => {
   try {
     const response = await axios.get(`api/user/${punc?'get-random-text-with-punctuations':'get-random-text'}`);
@@ -41,9 +49,8 @@ const [backspace,setBackspace]=useState(false);
  useEffect(() => {
    fetchData();
  }, [punc]);
- let newt=0;
     const {
-      states: { chars, charsState, phase, correctChar,errorChar,currIndex },
+      states: { chars, charsState, phase, correctChar,errorChar,currIndex, startTime},
       actions: { insertTyping, resetTyping, deleteTyping, getDuration, endTyping,}
     } = useTypingGame(apiResponse, { skipCurrentWordOnSpace: false, countErrors: 'once' });
     useEffect(() => {
@@ -55,13 +62,20 @@ const [backspace,setBackspace]=useState(false);
         const key = e.key;
         if (key === 'R' && e.shiftKey) {
         fetchData();
-         resetTyping();
-         return;
+        setTimeLeft(maxt);
+        resetTyping();
+        return;
         }
         if (key === 'Backspace') {
         setBackspace(true);
-          deleteTyping(false);
-          return;
+        deleteTyping(false);
+        const spanref = letterElements?.current?.children[currIndex];
+const top = spanref?.offsetTop
+if (top < 0) {
+  return;
+}
+if(top>300)
+setMargin((prevMargin) => prevMargin - 1);
         }
         if (key.length === 1) {
           setBackspace(false);
@@ -74,19 +88,6 @@ const [backspace,setBackspace]=useState(false);
         document.removeEventListener('keydown', handleKeyDown);
       };
     }, [insertTyping, resetTyping, deleteTyping, endTyping]);
-      useEffect(()=>{
-    const duration =()=>{
-      console.log(newt)
-      newt=getDuration();
-      setT(newt);
-      if(newt!=0&&(newt<maxt*1000))
-      setTimeout(duration,100);
-      else if(newt-maxt*1000>0){
-      endTyping();
-      clearTimeout(duration);
-          }}
-          setTimeout(duration,100);
-    },[phase])
     useEffect(() => {
       if (phase === 2) {
         const wpm=Math.round(((60 / maxt) * correctChar) / 5);
@@ -99,13 +100,69 @@ const [backspace,setBackspace]=useState(false);
         setWPM(wpm);
       }
     }, [phase, correctChar,errorChar]);
+
+    useEffect(() => { 
+      setMargin(0);
+    }, [apiResponse]);  
+
+    const pos = useMemo(() => {
+      if (currIndex !== -1 && letterElements.current) {
+          const spanref = letterElements.current.children[currIndex];
+    
+          const left = spanref.offsetLeft + spanref.offsetWidth - 2;
+          const top = spanref.offsetTop - 2;
+          if (top >300 && !backspace) {
+              setMargin((margin) => margin + 1);
+              return {
+                  left,
+                  top: top/2,
+              };
+          }
+          return { left, top };
+      } else {
+          return {
+              left: -2,
+              top: 2,
+          };
+      }
+    }, [currIndex]);
+
+    useEffect(() => {
+      const timerInterval = setInterval(() => {
+        if (startTime) {
+          setTimeLeft((timeLeft) => {
+            if (timeLeft === 1) {
+              clearInterval(timerInterval);
+              endTyping();
+            }
+            return maxt - Math.floor((Date.now() - startTime) / 1000);
+          });
+        }
+      }, 1000);
+      if (phase === 2) {
+        clearInterval(timerInterval);
+      }
+
+      return () => clearInterval(timerInterval);
+    }, [startTime, phase]);
+
+
   return (
 <>
   <div>
-  {!(phase==2)?<div className='flex flex-col items-center pb-[6.8rem] justify-center'>
-  <div >
-    
+  {!(phase==2)?<div className='flex flex-col items-center pb-[2rem] justify-center'>
+  <div className='h-[12rem] overflow-hidden'>
 <div className='text-[2rem] w-max-[100%] text-white font-ocra'
+    ref={letterElements}
+    style={
+      margin > 0
+        ? {
+            marginTop: -(margin * 25),
+          }
+        : {
+            marginTop: 0,
+          }
+    }
     >
       {chars.split("").map((char, index) => {
         let state = charsState[index];
@@ -127,8 +184,18 @@ const [backspace,setBackspace]=useState(false);
 {phase==0?
 <div className='flex gap-5 items-center w-max-[100%] mt-10 justify-center'>
   <div className='flex justify-center items-center gap-5 w-[6.5rem] text-[1.25rem] text-[#4d4d4d] box-border px-[1.25rem] h-[3.5rem] rounded-[1875rem] bg-black border-2 border-[#333]'>
-  <div onClick={()=>setPunc(!punc)} className={punc===true?'bg-[#1a1a1a] rounded-full min-w-[2rem] h-[2rem] flex justify-center items-center text-white':''}><span className='hover:text-white cursor-pointer'>@</span></div>
-  <div onClick={()=>setNum(!num)} className={num===true?'bg-[#1a1a1a] rounded-full min-w-[2rem] h-[2rem] flex justify-center items-center text-white':''}><span className='hover:text-white cursor-pointer'>#</span></div>
+  <div onClick={()=>{
+    if(punc===1)
+    setPunc(0);
+    else
+    setPunc(1);
+  }} className={punc===1?'bg-[#1a1a1a] rounded-full min-w-[2rem] h-[2rem] flex justify-center items-center text-white':'bg-transparent rounded-full min-w-[2rem] h-[2rem] flex justify-center items-center'}><span className='hover:text-white cursor-pointer'>@</span></div>
+  <div onClick={()=>{
+    if(punc===2)
+    setPunc(0);
+    else
+    setPunc(2);
+  }} className={punc===2?'bg-[#1a1a1a] rounded-full min-w-[2rem] h-[2rem] flex justify-center items-center text-white':'bg-transparent rounded-full min-w-[2rem] h-[2rem] flex justify-center items-center'}><span className='hover:text-white cursor-pointer'>#</span></div>
   </div>
 
   <div className='flex justify-center items-center gap-[3.9rem] w-[14.5rem] text-[1.25rem] text-[#4d4d4d] box-border px-[1.12rem] h-[3.5rem] rounded-[1875rem] bg-black border-2 border-[#333]'>
@@ -143,15 +210,19 @@ const [backspace,setBackspace]=useState(false);
 <span className='cursor-pointer hover:text-white'>T</span>
   </div>
 
-  <div className='flex justify-center items-center gap-[2.3rem] w-[16.75rem] text-[1.25rem] text-[#4d4d4d] box-border px-[1.25rem] h-[3.5rem] rounded-[1875rem] bg-black border-2 border-[#333]'>
-<div onClick={()=>setMaxt(15)} className={maxt===15?'bg-[#1a1a1a] rounded-full min-w-[2.5rem] h-[2.5rem] flex justify-center items-center text-white':''}><span className='hover:text-white cursor-pointer'>15</span></div>
-<div onClick={()=>setMaxt(30)} className={maxt===30?'bg-[#1a1a1a] rounded-full min-w-[2.5rem] h-[2.5rem] flex justify-center items-center text-white':''}><span className='hover:text-white cursor-pointer'>30</span></div>
-<div onClick={()=>setMaxt(60)} className={maxt===60?'bg-[#1a1a1a] rounded-full min-w-[2.5rem] h-[2.5rem] flex justify-center items-center text-white':''}><span className='hover:text-white cursor-pointer'>60</span></div>
-<div onClick={()=>setMaxt(120)} className={maxt===120?'bg-[#1a1a1a] rounded-full min-w-[2.5rem] h-[2.5rem] flex justify-center items-center text-white':''}><span className='hover:text-white cursor-pointer'>120</span></div>
+  <div className='flex justify-center items-center gap-[1.7rem] w-[16.75rem] text-[1.25rem] text-[#4d4d4d] box-border px-[1.25rem] h-[3.5rem] rounded-[1875rem] bg-black border-2 border-[#333]'>
+<div onClick={()=>{setMaxt(()=>15)
+setTimeLeft(15)}} className={maxt===15?'bg-[#1a1a1a] rounded-full min-w-[2.5rem] h-[2.5rem] flex justify-center items-center text-white':'bg-transparent rounded-full min-w-[2.5rem] h-[2.5rem] flex justify-center items-center'}><span className='hover:text-white cursor-pointer'>15</span></div>
+<div onClick={()=>{setMaxt(()=>30)
+setTimeLeft(30)}} className={maxt===30?'bg-[#1a1a1a] rounded-full min-w-[2.5rem] h-[2.5rem] flex justify-center items-center text-white':'bg-transparent rounded-full min-w-[2.5rem] h-[2.5rem] flex justify-center items-center'}><span className='hover:text-white cursor-pointer'>30</span></div>
+<div onClick={()=>{setMaxt(()=>60)
+setTimeLeft(60)}} className={maxt===60?'bg-[#1a1a1a] rounded-full min-w-[2.5rem] h-[2.5rem] flex justify-center items-center text-white':'bg-transparent rounded-full min-w-[2.5rem] h-[2.5rem] flex justify-center items-center'}><span className='hover:text-white cursor-pointer'>60</span></div>
+<div onClick={()=>{setMaxt(()=>120)
+setTimeLeft(120)}} className={maxt===120?'bg-[#1a1a1a] rounded-full min-w-[2.5rem] h-[2.5rem] flex justify-center items-center text-white':'bg-transparent rounded-full min-w-[2.5rem] h-[2.5rem] flex justify-center items-center'}><span className='hover:text-white cursor-pointer'>120</span></div>
 
   </div>
 </div>:<div className='mt-[4rem] text-white text-[1.25rem] flex justify-center items-center text-center'>
-  Time Left:{(maxt-t/1000).toFixed(0)}
+  Time Left:{timeLeft}
   </div>}
 </div>:
 <Results total={currIndex+1} miss={currIndex+1-correctChar-errorChar} secs={maxt} raw={raw} accu={accu} wpm={WPM} wrong={errorChar} correct={correctChar} reset={()=>{

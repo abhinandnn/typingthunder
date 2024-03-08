@@ -14,6 +14,10 @@ import sendArrow from '../../public/sendArrow.svg'
 import {refreshToken} from '@/components/AuthService';
 import axios from '@/api/axios';
 import { useRef } from 'react';
+import { useMemo } from 'react';
+import useTypingGame, { CharStateType } from "react-typing-game-hook";
+import Results from '@/components/results';
+import SpeedTestMulti from './SpeedTestMulti'
 const style = {
   position: 'absolute',
   top: '50%',
@@ -24,14 +28,16 @@ const style = {
   p: 4,
   outline:'none'
 };
-function Sphere({setType}) {
+function Sphere({setType,setPhase}) {
   const [game, setGame] = useState(0);
   const [socket, setSocket] = useState(null);
   const [roomCode, setRoomCode] = useState('');
   const [createdRoomCode, setCreatedRoomCode] = useState('');
   const accessToken = cookie.get('accesstoken');
   const [users, setUsers] = useState([]);
-
+  const [accu,setAccu]=useState(0);
+  const [wpm,setWpm]=useState(0);
+  const [position,setPosition]=useState(0);
   const [f,setF]=useState(1);
   const messagesEndRef = useRef(null);
   const [messages, setMessages] = useState([]);
@@ -41,6 +47,11 @@ function Sphere({setType}) {
   const openPopup = () => {
     setShowPopup(true);
   };
+
+useEffect(()=>{
+  console.log(position);
+},[position])
+
   useEffect (()=>{
 
     const checkAuth = async () => {
@@ -73,6 +84,7 @@ function Sphere({setType}) {
     });
 
     newSocket.on('sent-message', (username, message) => {
+      console.log('message',message);
       setMessages(prevMessages => [...prevMessages, { username, message }]);
     });
 
@@ -89,6 +101,12 @@ function Sphere({setType}) {
   return () => newSocket.close();
    })
   },[])
+
+useEffect(()=>{
+  if(socket)
+  socket.emit('update-position', roomCode, position);
+},[position])
+
   const closePopup = () => {
     setShowPopup(false);
   };
@@ -125,7 +143,6 @@ useEffect(() => {
   if (!socket) return;
 
   socket.on("starting-game", (message) => {
-      // setGameStartMessage(message);
       toast.success(message);
   });
 
@@ -193,6 +210,11 @@ const handleStartGame = () => {
     </ul>
     </div>
     <div className='flex'>
+
+<div>
+  <SpeedTestMulti  setMultiWPM={setWpm} setMultiAccu={setAccu} setPosition={setPosition} setPhase={setPhase}/>
+</div>
+
       <div>
   <div className='relative h-[30rem] w-[24rem] bg-[#333] border-[0.5px] border-[#fff] border-opacity-30 rounded-[0.75rem] bg-opacity-30'>
     <div className='pl-[0.75rem] text-[1.375rem] py-[1rem] border-b-[0.5px] border-[#B3B3B3] font-bold text-white'>Sphere Chat</div>
@@ -219,8 +241,10 @@ const handleStartGame = () => {
       </button>
       </div>
     </div>
-    <button onClick={handleReady}>Ready</button>
-            <button onClick={handleStartGame}>Start Game</button>
+    <div className='flex mt-[2rem]'>
+    <button className='w-[12rem] bg-white rounded-[0.5rem] text-[1rem] h-[3rem]' onClick={handleReady}>Ready</button>
+    <button className='w-[12rem] bg-transparent rounded-[0.5rem] text-white text-[1rem] h-[3rem]'onClick={handleStartGame}>Leave</button>
+  </div>
   </div>
   </div>
   </div>}

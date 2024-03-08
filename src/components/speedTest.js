@@ -19,7 +19,7 @@ import {useRef} from 'react';
 import { useMemo } from 'react';
 function SpeedTest({setPhase}) {
   const router =useRouter();
-  const letterElements = useRef(null);
+const letterElements = useRef(null);
 const [maxt,setMaxt]=useState(15);
 const [WPM,setWPM]=useState(0);
 const [accu,setAccu]=useState(0);

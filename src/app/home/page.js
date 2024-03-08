@@ -69,7 +69,7 @@ Rating
 </div>
 <div className={`flex flex-col ${type==0&&'justify-center'} min-h-[40rem] items-center`}>
 {type==0&&<SpeedTest setPhase={setPhase}/>}
-{type==3&&<Sphere setType={setType}/>}
+{type==3&&<Sphere setType={setType} setPhase={setPhase}/>}
 </div>
 <Footer/>
 </div>

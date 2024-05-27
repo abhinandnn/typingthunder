@@ -37,10 +37,10 @@ useEffect(() => {
 
  const fetchData = async () => {
   try {
-    const response = await axios.get(`api/user/${punc?'get-random-text-with-punctuations':'get-random-text'}`);
-    const text=response.data.text;
-    setApiResponse(text.join(' ').replace(/\s*([.,!?;:])/g, '$1'))
-    console.log(text.slice(0,50).join(' '));
+    // const response = await axios.get(`api/user/${punc?'get-random-text-with-punctuations':'get-random-text'}`);
+    // const text=;
+    setApiResponse("In literary theory, a text is any object that can be whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.")
+    // console.log(text.slice(0,50).join(' '));
    } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -183,7 +183,7 @@ setMargin((prevMargin) => prevMargin - 1);
 </div>
 {phase==0?
 <div className='flex gap-5 items-center w-max-[100%] mt-10 justify-center'>
-  <div className='flex justify-center items-center gap-5 w-[6.5rem] text-[1.25rem] text-[#4d4d4d] box-border px-[1.25rem] h-[3.5rem] rounded-[1875rem] bg-black border-2 border-[#333]'>
+  {/* <div className='flex justify-center items-center gap-5 w-[6.5rem] text-[1.25rem] text-[#4d4d4d] box-border px-[1.25rem] h-[3.5rem] rounded-[1875rem] bg-black border-2 border-[#333]'>
   <div onClick={()=>{
     if(punc===1)
     setPunc(0);
@@ -196,9 +196,9 @@ setMargin((prevMargin) => prevMargin - 1);
     else
     setPunc(2);
   }} className={punc===2?'bg-[#1a1a1a] rounded-full min-w-[2rem] h-[2rem] flex justify-center items-center text-white':'bg-transparent rounded-full min-w-[2rem] h-[2rem] flex justify-center items-center'}><span className='hover:text-white cursor-pointer'>#</span></div>
-  </div>
+  </div> */}
 
-  <div className='flex justify-center items-center gap-[3.9rem] w-[14.5rem] text-[1.25rem] text-[#4d4d4d] box-border px-[1.12rem] h-[3.5rem] rounded-[1875rem] bg-black border-2 border-[#333]'>
+  {/* <div className='flex justify-center items-center gap-[3.9rem] w-[14.5rem] text-[1.25rem] text-[#4d4d4d] box-border px-[1.12rem] h-[3.5rem] rounded-[1875rem] bg-black border-2 border-[#333]'>
   <div onClick={()=>setMode(0)} className={mode==0?'bg-[#1a1a1a] rounded-full min-w-[2rem] h-[2rem] flex justify-center items-center text-white group cursor-pointer':''}><svg className={`${mode==0?'stroke-white':'stroke-[#4d4d4d]'} hover:stroke-white`} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M12 7V12H17M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
@@ -208,9 +208,9 @@ setMargin((prevMargin) => prevMargin - 1);
 </svg>
 </div>
 <span className='cursor-pointer hover:text-white'>T</span>
-  </div>
+  </div> */}
 
-  <div className='flex justify-center items-center gap-[1.7rem] w-[16.75rem] text-[1.25rem] text-[#4d4d4d] box-border px-[1.25rem] h-[3.5rem] rounded-[1875rem] bg-black border-2 border-[#333]'>
+  {/* <div className='flex justify-center items-center gap-[1.7rem] w-[16.75rem] text-[1.25rem] text-[#4d4d4d] box-border px-[1.25rem] h-[3.5rem] rounded-[1875rem] bg-black border-2 border-[#333]'>
 <div onClick={()=>{setMaxt(()=>15)
 setTimeLeft(15)}} className={maxt===15?'bg-[#1a1a1a] rounded-full min-w-[2.5rem] h-[2.5rem] flex justify-center items-center text-white':'bg-transparent rounded-full min-w-[2.5rem] h-[2.5rem] flex justify-center items-center'}><span className='hover:text-white cursor-pointer'>15</span></div>
 <div onClick={()=>{setMaxt(()=>30)
@@ -220,7 +220,7 @@ setTimeLeft(60)}} className={maxt===60?'bg-[#1a1a1a] rounded-full min-w-[2.5rem]
 <div onClick={()=>{setMaxt(()=>120)
 setTimeLeft(120)}} className={maxt===120?'bg-[#1a1a1a] rounded-full min-w-[2.5rem] h-[2.5rem] flex justify-center items-center text-white':'bg-transparent rounded-full min-w-[2.5rem] h-[2.5rem] flex justify-center items-center'}><span className='hover:text-white cursor-pointer'>120</span></div>
 
-  </div>
+  </div> */}
 </div>:<div className='mt-[4rem] text-white text-[1.25rem] flex justify-center items-center text-center'>
   Time Left:{timeLeft}
   </div>}

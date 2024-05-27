@@ -39,8 +39,9 @@ useEffect(() => {
   try {
     // const response = await axios.get(`api/user/${punc?'get-random-text-with-punctuations':'get-random-text'}`);
     // const text=;
-    setApiResponse("In literary theory, a text is any object that can be whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.")
+    // setApiResponse("In literary theory, a text is any object that can be whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.")
     // console.log(text.slice(0,50).join(' '));
+    setApiResponse("Write at a speed of 50wpm - 70wpm and 100% accuracy to unlock the next level")
    } catch (error) {
     console.error('Error fetching data:', error);
   }

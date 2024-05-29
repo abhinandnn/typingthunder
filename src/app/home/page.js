@@ -19,6 +19,22 @@ import cookie from 'js-cookie'
 import SpeedTest from '@/components/speedTest';
 import Footer from '@/components/footer';
 import Sphere from '@/components/Sphere';
+import Modal from '@mui/material/Modal'
+import arrowL from '/public/arrowL.svg'
+import io from 'socket.io-client';
+// import sendArrow from '../../public/sendArrow.svg'
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 4,
+  outline:'none'
+};
+
 function Home() {
   const router =useRouter();
   const accessToken=cookie.get("accesstoken");
@@ -29,6 +45,28 @@ function Home() {
   logout();
   router.push('/login')
  }
+
+ const[showPopup,setShowPopup]=useState(false)
+ const openPopup = () => {
+   setShowPopup(true);
+ };
+
+ const closePopup = () => {
+  setShowPopup(false);
+};
+
+const handleSubmit = () => {
+  cookie.set("password", password);
+  cookie.set("link", link);
+}
+
+const [link,setLink]=useState("");
+const [password,setPassword]=useState("");
+
+useEffect(()=>{
+  if(!cookie.get("password")&&!cookie.get("link"))
+openPopup();
+},[])
 
   return (
     <Provider store={store}>
@@ -70,12 +108,34 @@ Rating
 }
 </div>
 <div className={`flex flex-col ${type==0&&'justify-center'} min-h-[40rem] items-center`}>
-{type==0&&<SpeedTest setPhase={setPhase}/>}
+{type==0&&!showPopup&&<SpeedTest setPhase={setPhase}/>}
 {type==3&&<Sphere setType={setType} setPhase={setPhase}/>}
 </div>
 {/* <Footer/> */}
 </div>
 </div>
+<Modal
+    open={showPopup}
+    onClose={closePopup}
+  >
+<div style={style}>
+  <div className='flex flex-col border border-[#4d4d4d] bg-[#1a1a1a] rounded-xl p-[1.5rem] w-[26rem] h-[22rem]'>
+    <div className='flex gap-2 items-center'>
+      <Image src={arrowL} alt='arrow' className='cursor-pointer' onClick={closePopup} />
+      </div>
+      <div>
+      <form className='px-[1.25rem] flex flex-col items-center' onSubmit={handleSubmit}>
+      <span className='text-white text-[1.25rem]'>Enter Password</span>
+      <input type='text' onChange={(e) => setPassword(e.target.value)} className=' text-white w-[20.5rem] bg-transparent outline-none text-[3rem] font-bold leading-none mt-[0.5rem]'/>
+      <span className='text-white text-[1.25rem]'>Enter Link</span>
+      <input type='text' onChange={(e) => setLink(e.target.value)} className=' text-white w-[20.5rem] bg-transparent outline-none text-[3rem] font-bold leading-none mt-[0.5rem]'/>
+
+      <button className='bg-white text-black text-[1.25rem] mt-3 py-[0.35rem] w-[20rem] rounded-lg'>Set</button>
+      </form>
+      </div>
+    </div>
+</div>
+  </Modal>
 </Provider>
   )
 }

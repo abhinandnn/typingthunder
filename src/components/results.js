@@ -2,11 +2,18 @@ import React, { use, useEffect } from 'react'
 import Score from './score'
 import Retry from '../../public/retry.svg'
 import Image from 'next/image'
+import cookie from 'js-cookie'
+import { useState } from 'react'
+
 function Results(props) {
   // useEffect(() => {
   //   props.reset();
   // }, []
   // )
+  const link=cookie.get("link");
+  const pwd=cookie.get("password");
+const [button,setButton]=useState(true);
+
   return (
     <div className='mb-[5rem] mt-[5rem] flex flex-col items-center justify-center gap-[4rem]'>
         <div className='flex flex-col justify-center items-start gap-[5rem]'>
@@ -29,11 +36,20 @@ function Results(props) {
         <div>
           <Image onClick={props.reset} className='cursor-pointer' src={Retry}/>
         </div>
-        {props.wpm>=30&&props.wpm<=70&&props.accu==100&&<div className='mb-[4rem]'>
-    <button className='bg-white text-black text-[1.375rem] w-[80vw] sm:w-[31.7rem] h-[4rem] px-6 pt-3 pb-[0.625rem] rounded-[1.25rem]'>
-      Password
+        {props.wpm>=50&&props.wpm<=70&&props.accu==100&&button&&<div className='mb-[4rem]'>
+    <button onClick={()=>setButton(false)} className='bg-white text-black text-[1.375rem] w-[80vw] sm:w-[31.7rem] h-[4rem] px-6 pt-3 pb-[0.625rem] rounded-[1.25rem]'>
+      Click here to get password and link
 </button>
-        </div>}
+</div>}
+{!button&&<>
+<div className='text-white text-[2rem] text-center'>
+  Password - {pwd}
+  </div>
+  <div className='text-white text-[2rem] text-center'>
+  Link - {link}
+  </div>
+  </>}
+
     </div>
   )
 }

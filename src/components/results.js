@@ -46,7 +46,7 @@ const [button,setButton]=useState(true);
   Password - {pwd}
   </div>
   <div className='text-white text-[2rem] text-center'>
-  Link - {link}
+  Link - <a href={link} target='_blank' className='underline'>{link}</a>
   </div>
   </>}
 
